@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <loyalty translate="label" module="loyalty">
+            <label>Programa Fidelidade</label>
+            <sort_order>20</sort_order>
+        </loyalty>
+    </tabs>
+    <sections>
+        <loyalty translate="label" module="loyalty">
+            <label>Configuração</label>
+            <tab>loyalty</tab>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+
+            <groups>
+                <general translate="label" module="loyalty">
+                    <label>Configuração básica</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+                        <active translate="label">
+                            <label>Habilitado</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                    </fields>
+                </general>
+                <points translate="label" module="loyalty">
+                    <label>Pontos</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+ 
+                    <fields>
+                        <money_to_point translate="label">
+                            <label>Real para Ponto</label>
+                            <comment>Quantos reais devem ser gastos para gerar 1 ponto</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </money_to_point>
+                        <point_to_money translate="label">
+                            <label>Pontos para Real</label>
+                            <comment>Quantos pontos são necessários para dar R$ 1,00 de desconto</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </point_to_money>                        
+                    </fields>
+                </points>
+            </groups>
+        </loyalty>
+    </sections>
+</config>
+    
