@@ -26,7 +26,7 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     *
     * @return float
     */
-    public function getPointsToMoney()
+    public function getPointToMoney()
     {
         return (float) Mage::getStoreConfig('loyalty/points/point_to_money');
     }
@@ -42,7 +42,7 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-    * Function responsible for convert order total in points
+    * Function responsible for convert money to points
     *
     * @param float $total Order grand total
     *
@@ -55,13 +55,41 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+    * Function responsible for convert points to money
+    *
+    * @param int $points User points
+    *
+    * @return float
+    */
+    public function calcDiscount($points)
+    {
+        $pointToMoney = $this->getPointToMoney();
+        return (float) floor($points / $pointToMoney);
+    }
+
+
+    /**
+    * Function responsible for convert discount used in order to points
+    *
+    * @param float $discount Order discount by points
+    *
+    * @return int
+    */
+    public function revertDiscountInPoints($discount)
+    {
+        $pointToMoney = $this->getPointToMoney();
+        return (int) floor($discount * $pointToMoney);
+    }
+
+    /**
     * Function responsible get date/time in mysql format
     *
     * @param string|null $date Date string
     *
     * @return string
     */
-    public function getTimestamp($date = false) {
+    public function getTimestamp($date = false)
+    {
         if(!$date) {
             return date('Y-m-d H:i:s', strtotime('now'));
         } else {
@@ -76,7 +104,8 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     *
     * @return null
     */
-    public function log($message) {
+    public function log($message)
+    {
         Mage::log($message, null, "loyalty.log");
     }
 }

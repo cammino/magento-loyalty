@@ -6,6 +6,11 @@
 		</Cammino_Loyalty>
 	</modules>
 	<global>
+        <blocks>
+            <loyalty>
+                <class>Cammino_Loyalty_Block</class>
+            </loyalty>
+        </blocks>
         <helpers>
             <loyalty>
                 <class>Cammino_Loyalty_Helper</class>
@@ -83,4 +88,16 @@
 			</loyalty>
 		</routers>
 	</frontend>
+    <default>
+        <payment>
+            <loyalty>
+                <active>1</active>
+                <model>loyalty/pay</model>
+                <order_status>processing</order_status>
+                <title>Pagar usando meus pontos</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>sale</payment_action>
+            </loyalty>
+         </payment>
+    </default>
 </config>

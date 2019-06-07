@@ -20,37 +20,14 @@ class Cammino_Loyalty_Model_Observer
      */
     public function orderCreated($observer)
     {
-        try {
-            $helper = Mage::helper("loyalty");
-
-            if($helper->isActive()) {
-                $loyalty = Mage::getModel("loyalty/loyalty");
-                $order = $observer->getOrder();
-                $total = $order->getGrandTotal();
-                $points = $helper->calcPoints($total);
-
-                $data = array(
-                    "customer_id"       => $order->getCustomerId(),
-                    "order_id"          => $order->getId(),
-                    "direction"         => 'credit',
-                    "amount"            => $total,
-                    "points"            => $points,
-                    "money_to_point"    => $helper->getMoneyToPoint(),
-                    "point_to_money"    => $helper->getPointsToMoney(),
-                    "status"            => 'pending',
-                    "created_at"        => $helper->getTimestamp(),
-                    "updated_at"        => $helper->getTimestamp(),
-                );
-
-                $saved = $loyalty->setData($data)->save();
-                if(!$saved) {
-                    $helper->log("Erro ao salvar os pontos no banco após concluir o pedido: " . $order->getId());
-                }
-            }
-        } catch (Exception $e) {
-            $helper->log($e->getMessage());
+        $helper = Mage::helper("loyalty");
+        $model = Mage::getModel("loyalty/points");
+        
+        if($helper->isActive()) {
+            $orderId = $observer->getOrder()->getId();
+            $model->generatePoints($orderId);
+            $model->debitPoints($orderId);
         }
-
     }
 
     /**
