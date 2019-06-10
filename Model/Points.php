@@ -23,9 +23,9 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $customerId = $customerData->getId();
             
             $collection = Mage::getModel("loyalty/loyalty")->getCollection()
-                ->addFieldToFilter('customer_id', $customerId)
-                ->addFieldToFilter('status', 'approved');
+                ->addFieldToFilter('customer_id', $customerId);
 
+            $collection->getSelect()->where("status = 'approved' OR (direction = 'debit' AND status != 'canceled')");
             $collection->getSelect()->columns('SUM(points) AS total');
             $total = 0;
 
@@ -93,32 +93,41 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
         try {
             $order = Mage::getModel('sales/order')->load($orderId);
             $code = $order->getPayment()->getMethodInstance()->getCode();
-
-            if($code == "loyalty") {
-                $helper = Mage::helper("loyalty");
+            $helper = Mage::helper("loyalty");
+            
+            if($code == "loyalty" || $helper->hasLoyaltyDiscountApplied()) {
                 $loyalty = Mage::getModel("loyalty/loyalty");
                 $total = $order->getGrandTotal();
-                $points = $helper->revertDiscountInPoints($total) * -1;
+
+                if($code == "loyalty") {
+                    $points = $helper->revertDiscountInPoints($total);
+                    $status = "approved";
+                } else {
+                    $points = $this->getAvailablePoints();
+                    $status = "pending";
+                }
+
 
                 $data = array(
                     "customer_id"       => $order->getCustomerId(),
                     "order_id"          => $order->getId(),
                     "direction"         => 'debit',
                     "amount"            => $total,
-                    "points"            => $points,
+                    "points"            => $points * -1,
                     "money_to_point"    => $helper->getMoneyToPoint(),
                     "point_to_money"    => $helper->getPointToMoney(),
-                    "status"            => 'approved',
+                    "status"            => $status,
                     "created_at"        => $helper->getTimestamp(),
                     "updated_at"        => $helper->getTimestamp(),
                 );
 
                 $saved = $loyalty->setData($data)->save();
+                $helper->resetLoyaltyDiscount();
+
                 if(!$saved) {
                     $helper->log("Erro ao salvar os pontos no banco após concluir o pedido: " . $order->getId());
                 }
             }
-
         } catch (Exception $e) {
             $helper->log($e->getMessage());
         }

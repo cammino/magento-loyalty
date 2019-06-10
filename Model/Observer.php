@@ -25,8 +25,8 @@ class Cammino_Loyalty_Model_Observer
         
         if($helper->isActive()) {
             $orderId = $observer->getOrder()->getId();
-            $model->generatePoints($orderId);
             $model->debitPoints($orderId);
+            $model->generatePoints($orderId);
         }
     }
 
@@ -42,20 +42,22 @@ class Cammino_Loyalty_Model_Observer
             $helper = Mage::helper("loyalty");
             $order = $observer->getOrder();
             
-            $loyalty = Mage::getModel("loyalty/loyalty")->getCollection()
+            $collection = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToSelect('*')
-                ->addFieldToFilter('order_id', $order->getId())
-                ->getFirstItem();
+                ->addFieldToFilter('order_id', $order->getId());
 
-            if($loyalty && $loyalty->getId()) {
-                $loyalty->setStatus("approved");
-                $loyalty->setUpdatedAt($helper->getTimestamp());
-                $saved = $loyalty->save();
-
-                if(!$saved) {
-                    $helper->log("Erro ao atualizar o status do pedido: " . $order->getId() . "para approved");
+            foreach($collection as $loyalty) {
+                if($loyalty->getId()) {
+                    $loyalty->setStatus("approved");
+                    $loyalty->setUpdatedAt($helper->getTimestamp());
+                    $saved = $loyalty->save();
+    
+                    if(!$saved) {
+                        $helper->log("Erro ao atualizar o status do pedido: " . $order->getId() . "para approved");
+                    }
                 }
             }
+            
         } catch(Exception $e) {
             $helper->log($e->getMessage());
         }

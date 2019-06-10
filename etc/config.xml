@@ -10,6 +10,13 @@
             <loyalty>
                 <class>Cammino_Loyalty_Block</class>
             </loyalty>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_totals>Cammino_Loyalty_Block_Adminhtml_Sales_Order_Totals</sales_order_totals>
+                    <sales_order_invoice_totals>Cammino_Loyalty_Block_Adminhtml_Sales_Order_Invoice_Totals</sales_order_invoice_totals>
+                    <sales_order_creditmemo_totals>Cammino_Loyalty_Block_Adminhtml_Sales_Order_Creditmemo_Totals</sales_order_creditmemo_totals>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <helpers>
             <loyalty>
@@ -76,6 +83,42 @@
                 </observers>
             </sales_order_payment_cancel>
         </events>
+        <sales>
+            <quote>
+                <totals>
+                    <loyalty_discount>
+                        <class>Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax</class>
+                        <after>subtotal</after>
+                    </loyalty_discount>
+                </totals>
+            </quote>
+            <order_invoice>
+                <totals>
+                    <loyalty_discount>
+                        <class>Cammino_Loyalty_Model_Sales_Order_Total_Invoice_Tax</class>
+                        <after>subtotal</after>
+                    </loyalty_discount>
+                </totals>
+            </order_invoice>
+            <order_creditmemo>
+                <totals>
+                    <loyalty_discount>
+                        <class>Cammino_Loyalty_Model_Sales_Order_Total_Creditmemo_Tax</class>
+                        <after>subtotal</after>
+                    </loyalty_discount>
+                </totals>
+            </order_creditmemo>
+        </sales>
+        <fieldsets>
+            <sales_convert_quote>
+                <loyaltytax>
+                    <to_order>*</to_order>
+                </loyaltytax>
+                <base_loyaltytax>
+                    <to_order>*</to_order>
+                </base_loyaltytax>
+            </sales_convert_quote>
+        </fieldsets>
 	</global>
     <frontend>
 		<routers>

@@ -12,7 +12,7 @@
 $installer = $this;
 $installer->startSetup();
 $installer->run(
-    "-- DROP TABLE IF EXISTS {$this->getTable('customer_points')};
+    "DROP TABLE IF EXISTS customer_points;
     CREATE TABLE `customer_points` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `customer_id` int(11) NOT NULL,
@@ -25,9 +25,15 @@ $installer->run(
       `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
       `status` varchar(255) NOT NULL,
-      PRIMARY KEY (`id`),
-      UNIQUE KEY `order_id` (`order_id`)
+      PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;"
 );
 
-$installer->endSetup(); 
+$installer->run("ALTER TABLE `". $installer->getTable('sales/order') ."` ADD `loyaltytax` DECIMAL(12,4) NULL");
+$installer->run("ALTER TABLE `". $installer->getTable('sales/order') ."` ADD `base_loyaltytax` DECIMAL(12,4) NULL");
+$installer->run("ALTER TABLE `". $installer->getTable('sales/quote') ."` ADD `loyaltytax` DECIMAL(12,4) NULL");
+$installer->run("ALTER TABLE `". $installer->getTable('sales/quote') ."` ADD `base_loyaltytax` DECIMAL(12,4) NULL");
+$installer->run("ALTER TABLE `". $installer->getTable('sales/invoice') ."` ADD `loyaltytax` DECIMAL(12,4) NULL");
+$installer->run("ALTER TABLE `". $installer->getTable('sales/invoice') ."` ADD `base_loyaltytax` DECIMAL(12,4) NULL");
+
+$installer->endSetup();

@@ -98,6 +98,46 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+    * Function responsible for set loyalty discount applied
+    *
+    * @return null
+    */
+    public function setLoyaltyDiscount($value)
+    {
+		Mage::getSingleton('core/session')->setLoyaltyDiscount(floatval($value));
+	}
+
+    /**
+    * Function responsible for get loyalty discount applied
+    *
+    * @return float
+    */
+    public function getLoyaltyDiscount()
+    {
+		return (float) Mage::getSingleton('core/session')->getLoyaltyDiscount();
+    }
+    
+    /**
+    * Function responsible reset Loyalty discount session
+    *
+    * @return null
+    */
+    public function resetLoyaltyDiscount()
+    {
+        Mage::getSingleton('core/session')->unsLoyaltyDiscount();
+    }
+
+    /**
+    * Function responsible check if das loyalty discount applied
+    *
+    * @return bool
+    */
+    public function hasLoyaltyDiscountApplied()
+    {
+		return (float) $this->getLoyaltyDiscount() > 0;
+    }
+
+    /**
     * Function responsible write in log file
     *
     * @param string $message Message that will be logged
