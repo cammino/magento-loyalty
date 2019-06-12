@@ -132,4 +132,19 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $helper->log($e->getMessage());
         }
     }
+
+    /**
+    * Function responsible for return all points registered
+    *
+    * @param int $customerId User Id
+    *
+    * @return object
+    */
+    public function getAllPoints() {
+        if(Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $customerData = Mage::getSingleton('customer/session')->getCustomer();
+            $customerId = $customerData->getId();
+            return Mage::getModel("loyalty/loyalty")->getCollection()->addFieldToFilter('customer_id', $customerId);
+        } return false;
+    }
 }

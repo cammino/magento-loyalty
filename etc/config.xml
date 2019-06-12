@@ -121,6 +121,13 @@
         </fieldsets>
 	</global>
     <frontend>
+		<layout>
+			<updates>
+				<loyalty>
+					<file>loyalty.xml</file>
+				</loyalty>
+			</updates>
+		</layout>
 		<routers>
 			<loyalty>
 				<use>standard</use>
