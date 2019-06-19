@@ -126,7 +126,7 @@
                 <use>admin</use>
                 <args>
                     <module>Cammino_Loyalty</module>
-                    <frontName>skinclub</frontName>
+                    <frontName>loyalty</frontName>
                 </args>
             </loyalty>
         </routers>

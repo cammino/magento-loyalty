@@ -1,23 +1,26 @@
 <?php
-class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controller_action {
-      protected function _initAction() {
+class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controller_action
+{
+    
+    protected function _initAction()
+    {
         $this->loadLayout();
         return $this;
-     }
-    public function indexAction()
-    {
-        $this->_initAction()->renderLayout();
-        Mage::log("reach index controller", null, 'skinclub.log');
-        
     }
 
+    public function indexAction()
+    {
+        $this->_initAction()->renderLayout();    
+    }
 
-    public function editAction() {
-        $id     = $this->getRequest()->getParam('id');
-        $model  = Mage::getModel('skinclub/points')->load($id);
+    public function editAction()
+    {
+        $id = $this->getRequest()->getParam('id');
+        $model = Mage::getModel('loyalty/loyalty')->load($id);
 
         if ($model->getId() || $id == 0) {
             $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+            
             if (!empty($data)) {
                 $model->setData($data);
             }
@@ -28,8 +31,8 @@ class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controlle
         
             $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
             
-            $this->_addContent($this->getLayout()->createBlock('skinclub/adminhtml_point_edit'))
-                ->_addLeft($this->getLayout()->createBlock('skinclub/adminhtml_point_edit_tabs'));
+            $this->_addContent($this->getLayout()->createBlock('loyalty/adminhtml_point_edit'))
+                ->_addLeft($this->getLayout()->createBlock('loyalty/adminhtml_point_edit_tabs'));
 
             $this->renderLayout();
             
@@ -39,21 +42,26 @@ class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controlle
         }
     }
  
-    public function newAction() {
+    public function newAction()
+    {
         $this->_forward('edit');
     }
  
-    public function saveAction() {
+    public function saveAction()
+    {
         if ($data = $this->getRequest()->getPost()) {
+            $model = Mage::getModel('loyalty/loyalty');
+            $data = $this->_filterDates($data, array('purchase_date'));
 
-            $model = Mage::getModel('skinclub/points');   
-            $data = $this->_filterDates($data, array('purchase_date'));  
-            $model->setData($data)
-                ->setId($this->getRequest()->getParam('id'));
-             
+            $id = $this->getRequest()->getParam('id');
+            $model->setData($data)->setId($id);
+            $model->setUpdatedAt(Mage::helper("loyalty")->getTimestamp());
+            
+            if ($id == NULL) {
+                $model->setCreatedAt(Mage::helper("loyalty")->getTimestamp());
+            }
+            
             try {
-                
-                
                 $model->save();
                 Mage::getSingleton('adminhtml/session')->addSuccess('Informações do ponto salvas com sucesso');
                 Mage::getSingleton('adminhtml/session')->setFormData(false);
@@ -62,8 +70,10 @@ class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controlle
                     $this->_redirect('*/*/edit', array('id' => $model->getId()));
                     return;
                 }
+               
                 $this->_redirect('*/*/');
                 return;
+
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
                 Mage::getSingleton('adminhtml/session')->setFormData($data);
@@ -75,14 +85,12 @@ class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controlle
         $this->_redirect('*/*/');
     }
  
-    public function deleteAction() {
+    public function deleteAction()
+    {
         if( $this->getRequest()->getParam('id') > 0 ) {
             try {
-                $model = Mage::getModel('skinclub/points');
-                 
-                $model->setId($this->getRequest()->getParam('id'))
-                    ->delete();
-                     
+                $model = Mage::getModel('loyalty/loyalty');
+                $model->setId($this->getRequest()->getParam('id'))->delete();
                 Mage::getSingleton('adminhtml/session')->addSuccess('Ponto excluido com sucesso');
                 $this->_redirect('*/*/');
             } catch (Exception $e) {

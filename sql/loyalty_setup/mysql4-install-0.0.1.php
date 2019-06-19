@@ -22,7 +22,7 @@ $installer->run(
       `points` int(11) NOT NULL,
       `money_to_point` float NOT NULL,
       `point_to_money` float NOT NULL,
-      `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
       `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
       `status` varchar(255) NOT NULL,
       PRIMARY KEY (`id`)

@@ -8,7 +8,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit extends Mage_Adminhtml_Block_Wi
                  
         $this->_objectId = 'id';
         $this->_controller = 'adminhtml_point';
-        $this->_blockGroup = 'skinclub';
+        $this->_blockGroup = 'loyalty';
         
         $this->_updateButton('save', 'label', 'Salvar');
         $this->_updateButton('delete', 'label', 'Excluir');

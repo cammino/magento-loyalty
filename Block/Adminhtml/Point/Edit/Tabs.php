@@ -1,5 +1,4 @@
 <?php
-
 class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
 
@@ -8,7 +7,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tabs extends Mage_Adminhtml_Blo
       parent::__construct();
       $this->setId('point_tabs');
       $this->setDestElementId('edit_form');
-      $this->setTitle('Pontos');
+      $this->setTitle('Fidelidade');
   }
 
   protected function _beforeToHtml()
@@ -16,7 +15,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tabs extends Mage_Adminhtml_Blo
       $this->addTab('form_section', array(
           'label'     => 'Campos',
           'title'     => 'Campos',
-          'content'   => $this->getLayout()->createBlock('skinclub/adminhtml_point_edit_tab_form')->toHtml(),
+          'content'   => $this->getLayout()->createBlock('loyalty/adminhtml_point_edit_tab_form')->toHtml(),
       ));
      
       return parent::_beforeToHtml();

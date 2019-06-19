@@ -37,6 +37,13 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'index'     => 'id',
 		));
 
+		$this->addColumn('customer_id', array(
+			'header'    => 'Cliente ID',
+			'align'     => 'right',
+			'width'     => '50px',
+			'index'     => 'customer_id'
+		));
+
 		$this->addColumn('customer', array(
 			'header'    => 'Cliente',
 			'align'     => 'right',
@@ -47,6 +54,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 		$this->addColumn('order_id', array(
 			'header'    => 'Pedido',
 			'align'     => 'right',
+			'width'     => '100px',
 			'index'     => 'order_id'
 		));
 		
@@ -66,6 +74,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'align'     => 'right',
 			'index'     => 'amount',
 			'type'		=> 'price',
+			'width'     => '250px',
 			'currency_code' => 'BRL'
 		));
 		
