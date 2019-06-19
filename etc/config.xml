@@ -120,6 +120,32 @@
             </sales_convert_quote>
         </fieldsets>
 	</global>
+    <admin>
+        <routers>
+            <loyalty>
+                <use>admin</use>
+                <args>
+                    <module>Cammino_Loyalty</module>
+                    <frontName>skinclub</frontName>
+                </args>
+            </loyalty>
+        </routers>
+    </admin>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <Cammino_Loyalty>
+                        <title>Loyalty Module</title>
+                        <sort_order>900</sort_order>
+                    </Cammino_Loyalty>
+                </children>
+            </admin>
+        </resources>
+    </acl>
     <frontend>
 		<layout>
 			<updates>
@@ -138,6 +164,41 @@
 			</loyalty>
 		</routers>
 	</frontend>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <Cammino_Loyalty>
+                            <title>Cammino Loyalty Module</title>
+                            <sort_order>30</sort_order>
+                        </Cammino_Loyalty>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <loyalty_point>
+                    <file>loyalty.xml</file>
+                </loyalty_point>
+            </updates>
+        </layout>
+        <menu>
+            <customer>
+                <children>
+                    <loyalty>
+                        <title>Fidelidade</title>
+                        <sort_order>150</sort_order>               
+                        <action>loyalty/adminhtml_point</action>
+                    </loyalty>
+                </children>
+            </customer>
+        </menu>
+    </adminhtml>
     <default>
         <payment>
             <loyalty>
