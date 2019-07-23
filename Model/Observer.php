@@ -74,20 +74,22 @@ class Cammino_Loyalty_Model_Observer
             $helper = Mage::helper("loyalty");
             $order = $observer->getEvent()->getPayment()->getOrder();
             
-            $loyalty = Mage::getModel("loyalty/loyalty")->getCollection()
+            $collection = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToSelect('*')
-                ->addFieldToFilter('order_id', $order->getId())
-                ->getFirstItem();
-
-            if($loyalty && $loyalty->getId()) {
-                $loyalty->setStatus("canceled");
-                $loyalty->setUpdatedAt($helper->getTimestamp());
-                $saved = $loyalty->save();
-
-                if(!$saved) {
-                    $helper->log("Erro ao atualizar o status do pedido: " . $order->getId() . "para canceled");
+                ->addFieldToFilter('order_id', $order->getId());
+            
+            foreach($collection as $loyalty) {
+                if($loyalty && $loyalty->getId()) {
+                    $loyalty->setStatus("canceled");
+                    $loyalty->setUpdatedAt($helper->getTimestamp());
+                    $saved = $loyalty->save();
+    
+                    if(!$saved) {
+                        $helper->log("Erro ao atualizar os pontos do pedido: " . $order->getId() . "para canceled");
+                    }
                 }
             }
+
         } catch(Exception $e) {
             $helper->log($e->getMessage());
         }
