@@ -14,10 +14,13 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 
 	protected function _prepareCollection()
 	{
+		$firstnameAttrId = Mage::helper("loyalty")->getFirstnameAttrId();
+		$lastnameAttrId = Mage::helper("loyalty")->getLastnameAttrId();
+
 		$collection = Mage::getModel('loyalty/loyalty')->getCollection();
 
-		$collection->addFieldToFilter('customer1.attribute_id', array('eq' => array(5)));
-		$collection->addFieldToFilter('customer2.attribute_id', array('eq' => array(7)));
+		$collection->addFieldToFilter('customer1.attribute_id', array('eq' => array($firstnameAttrId)));
+		$collection->addFieldToFilter('customer2.attribute_id', array('eq' => array($lastnameAttrId)));
 
 		$collection->getSelect()->join( array('customer1' => customer_entity_varchar), 'customer1.entity_id = main_table.customer_id', array('customer_firstname' => 'customer1.value'));
 		$collection->getSelect()->join( array('customer2' => customer_entity_varchar), 'customer2.entity_id = main_table.customer_id', array('customer_lastname' => 'customer2.value'));

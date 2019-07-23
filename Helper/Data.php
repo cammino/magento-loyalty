@@ -40,6 +40,27 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (float) Mage::getStoreConfig('loyalty/points/money_to_point');
     }
+    
+    
+    /**
+    * Function responsible for get firstname_attr_id config
+    *
+    * @return int
+    */
+    public function getFirstnameAttrId()
+    {
+        return (int) Mage::getStoreConfig('loyalty/general/firstname_attr_id');
+    }
+    
+    /**
+    * Function responsible for get lastnamename_attr_id config
+    *
+    * @return int
+    */
+    public function getLastnameAttrId()
+    {
+        return (int) Mage::getStoreConfig('loyalty/general/lastname_attr_id');
+    }
 
     /**
     * Function responsible for convert money to points
