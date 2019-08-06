@@ -61,6 +61,26 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (int) Mage::getStoreConfig('loyalty/general/lastname_attr_id');
     }
+    
+    /**
+    * Function responsible for get min_val_to_generate_points config
+    *
+    * @return float
+    */
+    public function getMinValToGeneratePoints()
+    {
+        return (float) Mage::getStoreConfig('loyalty/advanced/min_val_to_generate_points');
+    }
+    
+    /**
+    * Function responsible for get min_val_to_use_points config
+    *
+    * @return float
+    */
+    public function getMinValToUsePoints()
+    {
+        return (float) Mage::getStoreConfig('loyalty/advanced/min_val_to_use_points');
+    }
 
     /**
     * Function responsible for convert money to points

@@ -23,10 +23,21 @@ class Cammino_Loyalty_Model_Observer
         $helper = Mage::helper("loyalty");
         $model = Mage::getModel("loyalty/points");
         
+        $minValToGeneratePoints = $helper->getMinValToGeneratePoints();
+        $minValToUsePoints = $helper->getMinValToUsePoints();
+        
         if($helper->isActive()) {
             $orderId = $observer->getOrder()->getId();
-            $model->debitPoints($orderId);
-            $model->generatePoints($orderId);
+            $order = Mage::getModel('sales/order')->load($orderId);
+            $grandTotal = $order->getGrandTotal();
+            
+            if($grandTotal >= $minValToUsePoints) {
+                $model->debitPoints($orderId);
+            }
+
+            if($grandTotal >= $minValToGeneratePoints) {
+                $model->generatePoints($orderId);
+            }
         }
     }
 
