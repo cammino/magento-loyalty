@@ -30,3 +30,8 @@ Example: (skin/frontend/cammino/NOME_DO_TEMA/sass/styles.sass)
 ```
 
 **Re-build style.sass**
+
+# Configuration
+Admin configuration areas:
+- Sistema > Configuração > Programa Fidelidade
+- Clientes > Fidelidade
