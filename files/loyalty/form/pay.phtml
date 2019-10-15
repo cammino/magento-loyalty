@@ -1,27 +1,30 @@
 <?php $helper = Mage::helper("loyalty"); ?>
 <?php if($helper->isActive()): ?>
     <?php
+        $minValToUsePoints = $helper->getMinValToUsePoints();
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $points = Mage::getModel("loyalty/points")->getAvailablePoints();
         $grandTotal = $quote->getGrandTotal();
+        $points = Mage::getModel("loyalty/points")->getAvailablePoints();
         $discount = $helper->calcDiscount($points);
         $_code = $this->getMethodCode();
     ?>
     <div class="checkout-loyalty-container">
-        <?php if($discount >= $grandTotal && !$helper->hasLoyaltyDiscountApplied()): ?>
+        <?php if($grandTotal < $minValToUsePoints): ?>
+            <script> // Remove a forma de pagamento e não mostra o desconto
+                jQuery("#checkout-payment-method-load .payment-type.loyalty dt").remove();
+            </script>
+        <?php elseif($discount >= $grandTotal && !$helper->hasLoyaltyDiscountApplied()): // mostra a forma de pagamento fake ?>
             <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none;">
                 <li>
                     <p>
                         Você tem <span class="my-points"><?php echo $points; ?> pontos</span> para serem utilizados, ou seja, <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto em seus pedidos<br> Ao selecionar essa opção, você irá pagar o seu <span class="bold">pedido por completo</span> usando apenas os seus pontos <br>
                     </p>
                 </li>
-                <li><button type="button" class="button" onclick="payment.save()" autocomplete="off"><span><span>Fechar a Compra</span></span></button></li>
             </ul>
         <?php else: ?>
-            <script>
-                // Remove a forma de pagamento
-                jQuery("#checkout-payment-method-load #p_method_loyalty").parent().remove();
+            <script> // Remove a forma de pagamento e mostra o desconto
+                jQuery("#checkout-payment-method-load .payment-type.loyalty dt").remove();
             </script>
             
             <?php if($points > 0): ?>
@@ -68,16 +71,16 @@
                         }
 
                         // Add loading
-                        jQuery("#pagarme-mask").fadeIn();
-                        jQuery("#pagarme-overlay").fadeIn();
+                        jQuery("#onestepcheckout-payment-method").append("<div class='onestepcheckout-overlay onestepcheckout-overlay-48'></div>");
 
                         jQuery.ajax({
-                            type: "POST",
+                            method: "POST",
                             url: "/loyalty/payment/apply",
                             data: { action: action, discount: <?php echo $discount; ?> }
                         })
                         .done(function(data) {
-                            shippingMethod.save();
+                            OSCPayment.forcesavePayment();
+                            OSCShipment.switchToMethod(OSCShipment.currentMethod, true);
                             data = jQuery.parseJSON(data);
                             console.log(data.message);
                         });
