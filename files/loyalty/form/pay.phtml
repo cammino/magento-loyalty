@@ -1,0 +1,103 @@
+<?php $helper = Mage::helper("loyalty"); ?>
+<?php if($helper->isActive()): ?>
+    <?php
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $points = Mage::getModel("loyalty/points")->getAvailablePoints();
+        $grandTotal = $quote->getGrandTotal();
+        $discount = $helper->calcDiscount($points);
+        $_code = $this->getMethodCode();
+    ?>
+    <div class="checkout-loyalty-container">
+        <?php if($discount >= $grandTotal && !$helper->hasLoyaltyDiscountApplied()): ?>
+            <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none;">
+                <li>
+                    <p>
+                        Você tem <span class="my-points"><?php echo $points; ?> pontos</span> para serem utilizados, ou seja, <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto em seus pedidos<br> Ao selecionar essa opção, você irá pagar o seu <span class="bold">pedido por completo</span> usando apenas os seus pontos <br>
+                    </p>
+                </li>
+                <li><button type="button" class="button" onclick="payment.save()" autocomplete="off"><span><span>Fechar a Compra</span></span></button></li>
+            </ul>
+        <?php else: ?>
+            <script>
+                // Remove a forma de pagamento
+                jQuery("#checkout-payment-method-load #p_method_loyalty").parent().remove();
+            </script>
+            
+            <?php if($points > 0): ?>
+
+                <?php $boxClass = ""; ?>
+                <?php if($helper->hasLoyaltyDiscountApplied()): ?>
+                    <?php $boxClass = "active"; ?>
+                <?php endif; ?>
+
+
+                <div id="apply_loyalty_discount" class="has-points-to-use-box <?php echo $boxClass; ?>">
+                    <div class="box-header">
+                        <div class="box-checkbox"></div>
+                        <h4>Usar meus pontos como desconto</h4>
+                    </div>
+                    <div class="box-content">
+                        <p>Você tem <span class="my-points"><?php echo $points; ?> pontos</span>, ou seja <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto, clique aqui para aplicar</p>
+                    </div>
+                </div>
+
+                <script>
+
+                    function setLoyaltyCookie(name, value, minutes) {
+                        var d = new Date;
+                        d.setTime(d.getTime() + (minutes * 60 * 1000));
+                        document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+                    }
+
+                    function getLoyaltyCookie(name) {
+                        var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                        return v ? v[2] : null;
+                    }
+
+                    jQuery("#apply_loyalty_discount").on("click", function(e) {
+                        e.preventDefault();
+                        var box = jQuery(this);
+                        
+                        if(box.hasClass("active")) {
+                            var action = "disable";
+                            box.removeClass("active");
+                        } else {
+                            var action = "enable";
+                            box.addClass("active");
+                        }
+
+                        // Add loading
+                        jQuery("#pagarme-mask").fadeIn();
+                        jQuery("#pagarme-overlay").fadeIn();
+
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "/loyalty/payment/apply",
+                            data: { action: action, discount: <?php echo $discount; ?> }
+                        })
+                        .done(function(data) {
+                            shippingMethod.save();
+                            data = jQuery.parseJSON(data);
+                            console.log(data.message);
+                        });
+                    });
+
+                    // Verifica se é o primeiro acesso no checkout e marca a opção para usar desconto sozinho
+                    setTimeout(function() {
+                        var firstTime = getLoyaltyCookie("loyalty_first_time");
+                        if(firstTime == "true" || firstTime == "" || firstTime == null) {
+                            console.log("applicou o desconto automatico");
+                            setLoyaltyCookie("loyalty_first_time", "false", 30);
+                            jQuery("#apply_loyalty_discount").trigger("click");
+                        }
+                    }, 1000);
+                    
+                </script>
+
+
+            <?php endif; ?>
+
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

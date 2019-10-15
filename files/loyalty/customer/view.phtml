@@ -1,0 +1,41 @@
+<div class="my-account my-loyalty-points">
+    <div class="dashboard">
+        
+        <div class="page-title">
+            <h1>Meus Pontos</h1>
+        </div>
+    
+        <div class="welcome-msg">
+            <p>Aqui você acompanha o histórico e movimentações de seus pontos</p>
+        </div>
+
+        <div class="customer-loyalty-container">
+
+            <div class="points-resume-box">
+                <div class="points"><?php echo $this->getMyPoints(); ?></div>
+                <div class="label">pontos</div>
+            </div>
+
+            <?php if(count($this->getMyHistory()) > 0): ?>
+                <ul class="points-history">
+                    <?php foreach($this->getMyHistory() as $history): ?>
+                        <li class="<?php echo $history['class']; ?>">
+                            <ul>
+                                <li class="icon"><span></span></li>
+                                <li class="type"><?php echo $history["type"]; ?></li>
+                                <li class="order"><?php echo $history["order"]; ?></li>
+                                <li class="total"><?php echo $history["total"]; ?></li>
+                                <li class="points"><?php echo $history["points"]; ?></li>
+                                <li class="status"><?php echo $history["status"]; ?></li>
+                                <li class="date"><?php echo $history["date"]; ?></li>
+                            </ul>
+                        </li>
+
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <customer_account>
+        <reference name="customer_account_navigation">           
+            <action method="addLink" translate="label" module="loyalty">
+                <name>loyaltypoints</name>
+                <path>loyalty/customer/view</path>
+                <label>Meus Pontos</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <loyalty_customer_view>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="loyalty/customer" name="view.loyalty" template="loyalty/customer/view.phtml"/>
+        </reference>
+    </loyalty_customer_view>
+</layout>

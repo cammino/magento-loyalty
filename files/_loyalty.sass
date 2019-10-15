@@ -1,0 +1,270 @@
+$loyalty-icon-space-between: 20px
+$lotalty-icon-size: 54px
+$lotalty-icon-size-mobile: 34px
+
+$loyalty-green: #09B216
+$loyalty-red: #BE1616
+$loyalty-yellow: #FFAD12
+
+$loyalty-item-color: #707070
+$loyalty-item-icon-color: #aaa
+
+$loyalty-bp-medium: 1100px
+$loyalty-bp-mobile: 900px
+$loyalty-bp-small: 600px
+    
+.checkout-loyalty-container
+    display: block
+    width: 100%
+    margin-top: 10px
+
+.checkout-loyalty-container ul.form-list li p
+    display: block
+    font-size: 13px
+    line-height: 18px
+    padding-left: 25px
+
+.checkout-loyalty-container .form-list span.bold
+    font-weight: bold
+
+.checkout-loyalty-container .my-points
+    font-weight: bold
+    color: #1e88e5
+
+.checkout-loyalty-container .my-discount
+    font-weight: bold
+    color: #43a047
+
+.sp-methods .payment-type.loyalty dt
+    +fx-display
+    +fx-align-items(center)
+    height: 32px
+    background: url("../images/icon-loyalty.svg") no-repeat 25px
+
+.sp-methods .payment-type.loyalty dt label
+    padding-left: 65px
+
+.has-points-to-use-box
+    +fx-display
+    +fx-wrap(wrap)
+    width: 100%
+    border: 1px solid #ccc
+    border-radius: 4px
+    padding: 8px 12px
+    cursor: pointer
+
+.has-points-to-use-box.active
+    border-color: #1b8d20
+
+.has-points-to-use-box .box-header
+    +fx-display
+    +fx-align-items(center)
+    width: 100%
+
+.has-points-to-use-box .box-header h4
+    font-weight: bold
+    
+.has-points-to-use-box .box-header .box-checkbox
+    position: relative
+    display: inline-block
+    width: 16px
+    height: 16px
+    border: 1px solid #999
+    border-radius: 2px
+    margin-right: 6px
+
+.has-points-to-use-box.active .box-header .box-checkbox:before
+    position: absolute
+    width: calc(100% - 2px)
+    height: calc(100% - 2px)
+    background: #1b8d20
+    display: block
+    content: ""
+    border-radius: 2px
+    margin-left: 1px
+    margin-top: 1px
+
+.has-points-to-use-box .box-content
+    +fx-display
+    width: 100%
+    margin-top: 4px
+
+.has-points-to-use-box .box-content p
+    font-size: 13px
+    line-height: 16px
+
+/**************************************
+ ***** Customer Panel *****************
+ *************************************/
+.my-loyalty-points .welcome-msg
+    position: relative
+
+.my-loyalty-points .welcome-msg:after
+    position: absolute
+    width: 100%
+    height: 1px
+    background: #d0d0d0
+    content: ""
+    bottom: -70px
+    z-index: 1
+
+    +bp-custom($loyalty-bp-medium)
+        bottom: -100px
+
+.customer-loyalty-container
+    position: relative
+    margin-top: 150px
+
+    +bp-custom($loyalty-bp-medium)
+        margin-top: 190px
+        padding-left: 10px
+        padding-right: 10px
+    
+.customer-loyalty-container .points-resume-box
+    +fx-display
+    +fx-justify-content(center)
+    +fx-align-items(center)
+    +fx-wrap(wrap)
+    +fx-align-content(center)
+    position: absolute
+    right: 0
+    top: -140px
+    width: 300px
+    height: 130px
+    box-shadow: rgba(0,0,0,.16) 0 3px 6px
+    border: 1px solid #d0d0d0
+    z-index: 2
+    background: #fff
+
+.customer-loyalty-container .points-resume-box .points
+    font-size: 58px
+    color: #5a5a5a
+    width: 100%
+    text-align: center
+    line-height: 50px
+
+.customer-loyalty-container .points-resume-box .label
+    width: 100%
+    text-align: center
+    font-size: 18px
+
+.customer-loyalty-container ul.points-history
+    +fx-display
+    +fx-wrap(wrap)
+    width: 100%
+
+.customer-loyalty-container ul.points-history > li
+    +fx-display
+    width: 100%
+    margin-bottom: $loyalty-icon-space-between
+
+.customer-loyalty-container ul.points-history > li > ul
+    +fx-display
+    +fx-justify-content(space-between)
+    +fx-align-items(center)
+    width: 100%
+
+.customer-loyalty-container ul.points-history > li > ul > li
+    font-size: 16px
+    color: $loyalty-item-color
+
+    +bp-custom($loyalty-bp-small)
+        width: fit-content !important
+
+.customer-loyalty-container ul.points-history li.icon
+    position: relative
+    width: $lotalty-icon-size
+
+    +bp-custom($loyalty-bp-mobile)
+        width: $lotalty-icon-size-mobile
+
+.customer-loyalty-container ul.points-history li.icon:after
+    display: block
+    content: ""
+    width: 1px
+    height: $loyalty-icon-space-between
+    background: #ccc
+    position: absolute
+    bottom: -$loyalty-icon-space-between
+    left: 50%
+
+.customer-loyalty-container ul.points-history li:last-child ul li.icon:after
+    display: none
+
+.customer-loyalty-container ul.points-history li.icon span
+    display: block
+    width: $lotalty-icon-size
+    height: $lotalty-icon-size
+    border-radius: 50%
+    border: 1px solid $loyalty-item-icon-color
+
+    +bp-custom($loyalty-bp-mobile)
+        width: $lotalty-icon-size-mobile
+        height: $lotalty-icon-size-mobile
+
+.customer-loyalty-container ul.points-history li.icon span:before
+    +transform(translate(-50%, -50%))
+    position: absolute
+    display: block
+    color: $loyalty-item-icon-color
+    font-size: 30px
+    left: 50%
+    top: 50%
+    font-weight: normal
+    -webkit-font-smoothing: antialiased
+
+.customer-loyalty-container ul.points-history .credit li.icon span:before
+    content: "+"
+
+.customer-loyalty-container ul.points-history .debit li.icon span:before
+    content: "-"
+
+.customer-loyalty-container ul.points-history .debit.canceled li.icon span:before,
+.customer-loyalty-container ul.points-history .credit.canceled li.icon span:before,
+    content: "x"
+
+.customer-loyalty-container ul.points-history li.canceled
+    opacity: 0.8
+
+.customer-loyalty-container ul.points-history li.type
+    width: 66px
+
+    +bp-custom($loyalty-bp-mobile)
+        display: none
+
+.customer-loyalty-container ul.points-history li.order
+    width: 60px
+    
+.customer-loyalty-container ul.points-history li.total
+    width: 130px
+
+.customer-loyalty-container ul.points-history li.points
+    width: 100px
+    text-align: right
+
+.customer-loyalty-container ul.points-history .credit li.points
+    color: $loyalty-green
+
+.customer-loyalty-container ul.points-history .debit li.points
+    color: $loyalty-red
+
+.customer-loyalty-container ul.points-history .pending li.points
+    color: $loyalty-yellow
+
+.customer-loyalty-container ul.points-history .canceled li.points
+    color: #aaa
+    font-weight: normal
+
+
+.customer-loyalty-container ul.points-history .canceled li
+    color: #aaa
+
+.customer-loyalty-container ul.points-history li.status
+    width: 100px
+
+    +bp-custom($loyalty-bp-small)
+        display: none
+
+.customer-loyalty-container ul.points-history li.date
+    width: 80px
+    text-align: right
