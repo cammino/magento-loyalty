@@ -12,6 +12,17 @@
 class Cammino_Loyalty_Model_Observer
 {
 
+    public function checkPaymentmethod($observer)
+    {
+        $method = $observer->getEvent()->getMethodInstance();
+        if ($method->getCode() == 'loyalty') {
+            if (!Mage::getStoreConfig('loyalty/general/active')) {
+                $result = $observer->getEvent()->getResult();
+                $result->isAvailable = false;
+            }
+        }
+    }
+
     /**
      * Function responsible generate points for the customer
      * after order has been created

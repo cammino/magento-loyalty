@@ -82,6 +82,15 @@
                     </loyalty_order_canceled>
                 </observers>
             </sales_order_payment_cancel>
+            <payment_method_is_active>
+                <observers>
+                    <loyalty_payment_method_is_active>
+                        <type>singleton</type>
+                        <class>loyalty/observer</class>
+                        <method>checkPaymentmethod</method>
+                    </loyalty_payment_method_is_active>
+                </observers>
+            </payment_method_is_active>
         </events>
         <sales>
             <quote>
