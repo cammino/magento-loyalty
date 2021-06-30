@@ -62,7 +62,7 @@ class Cammino_Loyalty_Model_Observer
     {
         try {
             $helper = Mage::helper("loyalty");
-            $order = $observer->getOrder();
+            $order = $observer->getDataObject()->getOrder();
             
             $collection = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToSelect('*')
