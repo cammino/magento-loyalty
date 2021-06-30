@@ -104,7 +104,7 @@
                             <show_in_store>1</show_in_store>
                         </min_val_to_generate_points>
                         <min_val_to_use_points translate="label">
-                            <label>Valor mínimo do pedido para USAR Pontos teste</label>
+                            <label>Valor mínimo do pedido para USAR Pontos</label>
                             <comment></comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>2</sort_order>
