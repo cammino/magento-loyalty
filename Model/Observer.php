@@ -115,6 +115,21 @@ class Cammino_Loyalty_Model_Observer
         } catch(Exception $e) {
             $helper->log($e->getMessage());
         }
+    }
 
+    /**
+     * Function responsible to check if user is logout
+     * and reset Loyalty Points
+     *
+     * @return null
+     */
+    public function customerLogout($observer)
+    {
+        $helper = Mage::helper("loyalty");
+        $model = Mage::getModel("loyalty/points");
+
+        if($helper->isActive()) {
+            Mage::helper("loyalty")->resetLoyaltyDiscount();
+        }
     }
 }

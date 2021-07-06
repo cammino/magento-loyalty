@@ -91,6 +91,15 @@
                     </loyalty_payment_method_is_active>
                 </observers>
             </payment_method_is_active>
+            <customer_logout>
+                <observers>
+                    <loyalty_customer_logout>
+                        <type>singleton</type>
+                        <class>loyalty/observer</class>
+                        <method>customerLogout</method>
+                    </loyalty_customer_logout>
+                </observers>
+            </customer_logout>
         </events>
         <sales>
             <quote>
