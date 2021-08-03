@@ -189,4 +189,14 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log($message, null, "loyalty.log");
     }
+
+    /**
+    * Function responsible for get shipping_discount config
+    *
+    * @return float
+    */
+    public function getShippingDiscount()
+    {
+        return (bool) Mage::getStoreConfig('loyalty/advanced/shipping_discount');
+    }
 }

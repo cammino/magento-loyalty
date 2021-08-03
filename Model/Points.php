@@ -56,7 +56,15 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 $loyalty = Mage::getModel("loyalty/loyalty");
                 $total = $order->getGrandTotal();
                 $points = $helper->calcPoints($total);
-                
+                $shippingDiscount = Mage::helper("loyalty")->getShippingDiscount();
+
+                if ($shippingDiscount) {
+                    $quote = Mage::getSingleton('checkout/session')->getQuote();
+                    $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
+
+                    $total = $order->getGrandTotal() - $shippingAmount;
+                }
+
                 $data = array(
                     "customer_id"       => $order->getCustomerId(),
                     "order_id"          => $order->getId(),
