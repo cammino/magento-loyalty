@@ -105,7 +105,7 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     public function calcDiscount($points)
     {
         $pointToMoney = $this->getPointToMoney();
-        return (float) floor($points / $pointToMoney);
+        return (float) (floor(($points / $pointToMoney) * 100) / 100);
     }
 
 
