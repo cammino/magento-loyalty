@@ -72,7 +72,7 @@ class Cammino_Loyalty_Model_Observer
                 if($loyalty->getId()) {
                     $loyalty->setStatus("approved");
                     $loyalty->setUpdatedAt($helper->getTimestamp());
-                    $loyalty->setExpiresAt(date('Y-m-d H:i:s', strtotime(Mage::helper("loyalty")->getTimestamp() . ' + ' . Mage::helper("loyalty")->getDaysToExpire() . ' days')));
+                    $loyalty->setData('expires_at', (date('Y-m-d H:i:s', strtotime(Mage::helper("loyalty")->getTimestamp() . ' + ' . Mage::helper("loyalty")->getDaysToExpire() . ' days'))));
                     $saved = $loyalty->save();
     
                     if(!$saved) {

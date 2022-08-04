@@ -59,7 +59,7 @@ class Cammino_Loyalty_Adminhtml_PointController extends Mage_Adminhtml_Controlle
             
             if ($id == NULL) {
                 $model->setCreatedAt(Mage::helper("loyalty")->getTimestamp());
-                $model->setExpiresAt(date('Y-m-d H:i:s', strtotime(Mage::helper("loyalty")->getTimestamp() . ' + ' . Mage::helper("loyalty")->getDaysToExpire() . ' days')));
+                $model->setData('expires_at', (date('Y-m-d H:i:s', strtotime(Mage::helper("loyalty")->getTimestamp() . ' + ' . Mage::helper("loyalty")->getDaysToExpire() . ' days'))));
             }
             
             try {
