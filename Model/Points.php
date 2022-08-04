@@ -25,7 +25,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $collection = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
 
-            $collection->getSelect()->where("status = 'approved' OR (direction = 'debit' AND status != 'canceled')");
+            $collection->getSelect()->where("(status = 'approved' OR (direction = 'debit' AND status != 'canceled')) AND (DATE(expires_at) > DATE(NOW()))");
             $collection->getSelect()->columns('SUM(points) AS total');
             $total = 0;
 
