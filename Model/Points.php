@@ -76,6 +76,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                     "status"            => 'pending',
                     "created_at"        => $helper->getTimestamp(),
                     "updated_at"        => $helper->getTimestamp(),
+                    "expires_at"        => $helper->getTimestamp(),
                 );
 
                 $saved = $loyalty->setData($data)->save();

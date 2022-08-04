@@ -112,6 +112,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </min_val_to_use_points>
+                        <days_to_expire translate="label">
+                            <label>Dias até expirar os pontos</label>
+                            <comment>Deixar 0 ou vazio para os pontos não expirarem</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </days_to_expire>
                         <show_points_on_product_view translate="label">
                             <label>Mostrar quantos pontos irá gerar na página do produto</label>
                             <frontend_type>select</frontend_type>

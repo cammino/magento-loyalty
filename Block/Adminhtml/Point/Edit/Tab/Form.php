@@ -7,6 +7,10 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tab_Form extends Mage_Adminhtml
 		$this->setForm($form);
 		$fieldset = $form->addFieldset('point_form', array('legend' => 'Informações do Ponto'));
 
+        $dateFormatIso = Mage::app()->getLocale()->getDateFormat(
+            Mage_Core_Model_Locale::FORMAT_TYPE_SHORT
+        );
+
 		$fieldset->addField('customer_id', 'text', array(
 			'label'    	=> 'ID Cliente',
 			'name'      => 'customer_id',
@@ -60,6 +64,18 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tab_Form extends Mage_Adminhtml
 			'index'     => 'point_to_money',
 			'required'  => true
 		));
+
+        $fieldset->addField(
+            'expires_at', 
+            'date', 
+            array(
+            'label' => "Válido até",
+            'required'  => false,
+            'name'=> 'expires_at',
+            'format'    => $dateFormatIso,
+            'image' => $this->getSkinUrl('images/grid-cal.gif'),
+            'class' => 'date-range-custom_theme-from')
+        );
 		
 		$fieldset->addField('status', 'select', array(
 			'label'    	=> 'Status',

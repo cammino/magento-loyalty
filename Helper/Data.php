@@ -81,6 +81,16 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (float) Mage::getStoreConfig('loyalty/advanced/min_val_to_use_points');
     }
+    
+    /**
+    * Function responsible for get days_to_expire config
+    *
+    * @return float
+    */
+    public function getDaysToExpire()
+    {
+        return (float) Mage::getStoreConfig('loyalty/advanced/days_to_expire');
+    }
 
     /**
     * Function responsible for convert money to points

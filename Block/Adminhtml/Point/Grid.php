@@ -102,6 +102,14 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'type' 		=> 'datetime',
 			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Updatedat'
 		));
+		
+		$this->addColumn('expires_at', array(
+			'header'    => 'Valido até',
+			'align'     => 'right',
+			'index'     => 'expires_at',
+			'type' 		=> 'datetime',
+			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Expiresat'
+		));
 
 	    $this->addColumn('action',
 			array(
