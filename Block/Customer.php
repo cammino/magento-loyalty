@@ -24,6 +24,11 @@ class Cammino_Loyalty_Block_Customer extends Mage_Core_Block_Template
             } else {
                 $status = "--";
             }
+            if(($status != "Cancelado") && (date('Y-m-d H:i:s') > $point->getData('expires_at'))) {
+                Mage::log(date('Y-m-d H:i:s'), null, 'fidel.log');
+                Mage::log($point->getData('expires_at'), null, 'fidel.log');
+                $status = "Expirado";
+            }
 
             $history[] = array (
                 "class" => $point->getDirection() . " " . $point->getStatus(),
