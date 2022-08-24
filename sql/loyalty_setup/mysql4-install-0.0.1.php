@@ -24,18 +24,10 @@ $installer->run(
       `point_to_money` float NOT NULL,
       `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
       `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-      `expires_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
       `status` varchar(255) NOT NULL,
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;"
 );
-
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/order') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/order') ."` drop column `loyaltytax`; end if;");
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/order') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/order') ."` drop column `base_loyaltytax`; end if;");
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/quote') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/quote') ."` drop column `loyaltytax`; end if;");
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/quote') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/quote') ."` drop column `base_loyaltytax`; end if;");
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/invoice') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/invoice') ."` drop column `loyaltytax`; end if;");
-$installer->run("if exists (select * from information_schema.columns where table_name = `". $installer->getTable('sales/invoice') ."` and column_name = `loyaltytax`) then alter table `". $installer->getTable('sales/invoice') ."` drop column `base_loyaltytax`; end if;");
 
 $installer->run("ALTER TABLE `". $installer->getTable('sales/order') ."` ADD `loyaltytax` DECIMAL(12,4) NULL");
 $installer->run("ALTER TABLE `". $installer->getTable('sales/order') ."` ADD `base_loyaltytax` DECIMAL(12,4) NULL");
