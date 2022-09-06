@@ -24,6 +24,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 
 		$collection->getSelect()->join( array('customer1' => customer_entity_varchar), 'customer1.entity_id = main_table.customer_id', array('customer_firstname' => 'customer1.value'));
 		$collection->getSelect()->join( array('customer2' => customer_entity_varchar), 'customer2.entity_id = main_table.customer_id', array('customer_lastname' => 'customer2.value'));
+		$collection->getSelect()->join( array('orders' => 'sales_flat_order'), 'orders.entity_id = main_table.order_id', array('increment_id' => 'orders.increment_id'));
 
 		$collection->addExpressionFieldToSelect('customer_fullname', ' CONCAT(CONCAT(customer1.value, \' \'), customer2.value)  ', array());
 
@@ -54,11 +55,11 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'filter_condition_callback' => array($this, '_filterFullName')
 		));
 
-		$this->addColumn('order_id', array(
+		$this->addColumn('increment_id', array(
 			'header'    => 'Pedido',
 			'align'     => 'right',
 			'width'     => '100px',
-			'index'     => 'order_id'
+			'index'     => 'increment_id'
 		));
 		
 		$this->addColumn('direction', array(
