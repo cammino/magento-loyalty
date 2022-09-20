@@ -89,7 +89,12 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     */
     public function getDaysToExpire()
     {
-        return (float) Mage::getStoreConfig('loyalty/advanced/days_to_expire');
+        if (!empty(Mage::getStoreConfig('loyalty/advanced/days_to_expire'))) {
+            return (float) Mage::getStoreConfig('loyalty/advanced/days_to_expire');
+        } else {
+            return 9999;
+        }
+
     }
 
     /**
