@@ -22,15 +22,21 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $customerData = Mage::getSingleton('customer/session')->getCustomer();
             $customerId = $customerData->getId();
             
-            $collection = Mage::getModel("loyalty/loyalty")->getCollection()
+            $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
+                ->addFieldToFilter('customer_id', $customerId);
+            $collectionDebit = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
 
-            $collection->getSelect()->where("(status = 'approved' OR (direction = 'debit' AND status != 'canceled')) AND (DATE(expires_at) > DATE(NOW()))");
-            $collection->getSelect()->columns('SUM(points) AS total');
+            $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) > DATE(NOW()))");
+            $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled')");
+
             $total = 0;
 
-            foreach($collection as $item) {
-                $total += $item->getTotal();
+            foreach($collectionCredit as $item) {
+                $total += $item->getPoints();
+            }
+            foreach($collectionDebit as $item) {
+                $total += $item->getPoints();
             }
             
             return $total;
