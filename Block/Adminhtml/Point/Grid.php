@@ -45,7 +45,8 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'header'    => 'Cliente ID',
 			'align'     => 'right',
 			'width'     => '50px',
-			'index'     => 'customer_id'
+			'index'     => 'customer_id',
+			'filter_index'=>'main_table.customer_id',
 		));
 
 		$this->addColumn('customer', array(
