@@ -113,6 +113,18 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Expiresat'
 		));
 
+        $this->addColumn('status', array(
+            'header'       => 'Status',
+            'index'        => 'status',
+            'filter_index' => 'main_table.status',
+            'type'         => 'options',
+            'options'      => array (
+                'approved' => 'Aprovado',
+                'pending'  => 'Pendente',
+                'canceled' => 'Cancelado'
+            )
+        ));
+
 	    $this->addColumn('action',
 			array(
 				'header'    =>  'Ação',
