@@ -24,17 +24,24 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             
             $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
-            $collectionDebit = Mage::getModel("loyalty/loyalty")->getCollection()
-                ->addFieldToFilter('customer_id', $customerId);
 
             $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) > DATE(NOW()))");
-            $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled')");
 
             $total = 0;
 
+            $i = 0;
             foreach($collectionCredit as $item) {
+                if ($i == 0) {
+                    $firstValidCreditId = $item->getId();
+                }
                 $total += $item->getPoints();
+                $i++;
             }
+
+            $collectionDebit = Mage::getModel("loyalty/loyalty")->getCollection()
+                ->addFieldToFilter('customer_id', $customerId);
+            $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled' AND id > ".$firstValidCreditId.")");
+            
             foreach($collectionDebit as $item) {
                 $total += $item->getPoints();
             }
