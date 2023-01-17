@@ -30,6 +30,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $total = 0;
 
             $i = 0;
+            $firstValidCreditId = 0;
             foreach($collectionCredit as $item) {
                 if ($i == 0) {
                     $firstValidCreditId = $item->getId();
