@@ -182,6 +182,18 @@
 			</loyalty>
 		</routers>
 	</frontend>
+    <crontab>
+        <jobs>
+            <loyalty_job>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>loyalty/job::notify</model>
+                </run>
+            </loyalty_job>
+        </jobs>
+    </crontab>
     <adminhtml>
         <acl>
             <resources>
