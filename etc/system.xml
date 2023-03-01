@@ -121,6 +121,33 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </days_to_expire>
+                        <notice_one translate="label">
+                            <label>Dias faltando para enviar primeiro lembrete de expiração por e-mail</label>
+                            <comment>Deixar 0 ou vazio para não enviar</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_one>
+                        <notice_two translate="label">
+                            <label>Dias faltando para enviar segundo lembrete de expiração por e-mail</label>
+                            <comment>Deixar 0 ou vazio para não enviar</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_two>
+                        <notice_three translate="label">
+                            <label>Dias faltando para enviar terceiro lembrete de expiração por e-mail</label>
+                            <comment>Deixar 0 ou vazio para não enviar</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_three>
                         <show_points_on_product_view translate="label">
                             <label>Mostrar quantos pontos irá gerar na página do produto</label>
                             <frontend_type>select</frontend_type>
