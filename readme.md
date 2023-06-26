@@ -13,6 +13,9 @@ cp -r app/code/community/Cammino/Loyalty/files/loyalty/ app/design/frontend/camm
 cp app/code/community/Cammino/Loyalty/files/Cammino_Loyalty.xml app/etc/modules/
 cp app/code/community/Cammino/Loyalty/files/icon-loyalty.svg skin/frontend/cammino/NOME_DO_TEMA/images/
 cp app/code/community/Cammino/Loyalty/files/_loyalty.sass skin/frontend/cammino/NOME_DO_TEMA/sass/module/
+cp app/code/community/Cammino/Loyalty/files/app/locale/en_US/template/email/loyalty.html app/locale/en_US/template/loyalty.html
+cp app/code/community/Cammino/Loyalty/files/app/locale/pt_BR/template/email/loyalty.html app/locale/pt_BR/template/loyalty.html
+
 ```
 
 ### Adding sass to main style file
