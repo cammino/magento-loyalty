@@ -94,7 +94,8 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'align'     => 'right',
 			'index'     => 'created_at',
 			'type' 		=> 'datetime',
-			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Createdat'
+			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Createdat',
+			'filter_index'=>'main_table.created_at',
 		));
 		
 		$this->addColumn('updated_at', array(
