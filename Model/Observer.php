@@ -12,6 +12,15 @@
 class Cammino_Loyalty_Model_Observer
 {
 
+    public function checkoutMinLoyaltyCheck() {
+        $helper = Mage::helper("loyalty");
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $subtotal = $quote->getSubtotal();
+        Mage::log('quote subtotal: ' . $subtotal, null, 'loyaltysub.log');
+        if ($subtotal < $helper->getMinValToUsePoints()) {
+            $helper->setLoyaltyDiscount(0);
+        }
+    }
     public function checkPaymentmethod($observer)
     {
         $method = $observer->getEvent()->getMethodInstance();

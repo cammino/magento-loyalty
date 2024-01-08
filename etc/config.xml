@@ -109,6 +109,15 @@
                     </loyalty_customer_logout>
                 </observers>
             </customer_logout>
+            <controller_action_predispatch_checkout_onepage_index>
+                <observers>
+                    <loyalty_min_check>
+                        <type>singleton</type>
+                        <class>loyalty/observer</class>
+                        <method>checkoutMinLoyaltyCheck</method>
+                    </loyalty_min_check>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_index>
         </events>
         <sales>
             <quote>
