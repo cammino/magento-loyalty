@@ -16,7 +16,6 @@ class Cammino_Loyalty_Model_Observer
         $helper = Mage::helper("loyalty");
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $subtotal = $quote->getSubtotal();
-        Mage::log('quote subtotal: ' . $subtotal, null, 'loyaltysub.log');
         if ($subtotal < $helper->getMinValToUsePoints()) {
             $helper->setLoyaltyDiscount(0);
         }
