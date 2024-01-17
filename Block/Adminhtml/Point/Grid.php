@@ -101,7 +101,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 		$this->addColumn('updated_at', array(
 			'header'    => 'Atualizado em',
 			'align'     => 'right',
-			'index'     => 'updated_at',
+			'index'     => 'main_table.updated_at',
 			'type' 		=> 'datetime',
 			'renderer'  => 'Cammino_Loyalty_Block_Adminhtml_Point_Grid_Renderer_Updatedat'
 		));
@@ -154,7 +154,10 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 		}
 		
 	    if (!empty($value)) {
-			$this->getCollection()->getSelect()->where("customer1.value LIKE '%" . $value . "%' OR customer2.value LIKE '%" . $value . "%'");
+			$this->getCollection()->getSelect()->where(
+				"CONCAT(CONCAT(customer1.value, ' '), customer2.value) LIKE ?",
+				"%$value%"
+			);
 	    }
 
 	    return $this;
