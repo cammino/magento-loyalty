@@ -18,7 +18,8 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tab_Form extends Mage_Adminhtml
 			'label'    	=> 'ID Pedido',
 			'name'      => 'order_id',
 			'index'     => 'order_id',
-			'required'  => true
+			'required'  => true,
+            'renderer' => $this->_getOrderIncrementIdRenderer()
 		));
 		
 		$fieldset->addField('direction', 'select', array(
@@ -82,4 +83,13 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tab_Form extends Mage_Adminhtml
 		}
 		return parent::_prepareForm();
 	}
+    protected function _getOrderIncrementIdRenderer()
+    {
+        return $this->getLayout()->createBlock(
+            'loyalty/adminhtml_renderer_orderIncrementId',
+            '',
+            array('is_render_to_js_template' => true)
+        );
+    }
+	
 }
