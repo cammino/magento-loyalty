@@ -141,4 +141,18 @@ class Cammino_Loyalty_Model_Observer
             Mage::helper("loyalty")->resetLoyaltyDiscount();
         }
     }
+
+    public function alterOrderNumberToOrderId($observer) {
+        $point = $observer->getEvent()->getObject();
+        if (get_class($point) !== "Cammino_Loyalty_Model_Loyalty") {
+            return;
+        }
+        $orderNumber = $point->getOrderId();
+        if(empty(Mage::getModel('sales/order')->load($orderNumber)->getId())) {
+            if (!empty(Mage::getModel('sales/order')->loadByIncrementId($orderNumber)->getId())) {
+                $point->setOrderId(Mage::getModel('sales/order')->loadByIncrementId($orderNumber)->getId());
+            }
+        }
+    }
+
 }

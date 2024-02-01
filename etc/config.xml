@@ -67,6 +67,14 @@
             </loyalty_read>
         </resources>
         <events>
+            <model_save_before>
+                <observers>
+                    <increment_to_id>
+                        <class>loyalty/observer</class>
+                        <method>alterOrderNumberToOrderId</method>
+                    </increment_to_id>
+                </observers>
+            </model_save_before>
             <sales_order_place_after>
                 <observers>
                     <loyalty_order_created>

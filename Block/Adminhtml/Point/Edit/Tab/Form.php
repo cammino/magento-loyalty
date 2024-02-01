@@ -14,13 +14,16 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Edit_Tab_Form extends Mage_Adminhtml
 			'required'  => true
 		));
 		
-		$fieldset->addField('order_id', 'text', array(
+		$orderId = $fieldset->addField('order_id', 'text', array(
 			'label'    	=> 'ID Pedido',
 			'name'      => 'order_id',
 			'index'     => 'order_id',
 			'required'  => true,
             'renderer' => $this->_getOrderIncrementIdRenderer()
 		));
+
+		$renderer = $this->getLayout()->createBlock('loyalty/adminhtml_renderer_orderIncrementId');
+		$orderId->setRenderer($renderer);
 		
 		$fieldset->addField('direction', 'select', array(
 			'label'    	=> 'Tipo',
