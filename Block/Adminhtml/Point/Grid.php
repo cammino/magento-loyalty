@@ -61,7 +61,7 @@ class Cammino_Loyalty_Block_Adminhtml_Point_Grid extends Mage_Adminhtml_Block_Wi
 			'align'     => 'right',
 			'width'     => '100px',
 			'index'     => 'increment_id',
-			'renderer' => 'Custom_Module_Block_Adminhtml_Renderer_OrderLink'
+			'renderer' => 'Cammino_Loyalty_Block_Adminhtml_Renderer_OrderLink'
 		));
 		
 		$this->addColumn('direction', array(
