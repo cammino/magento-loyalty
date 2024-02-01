@@ -49,8 +49,9 @@ class Cammino_Loyalty_Model_Observer
             $orderId = $observer->getOrder()->getId();
             $order = Mage::getModel('sales/order')->load($orderId);
             $grandTotal = $order->getGrandTotal();
+            $subTotal = $order->getSubtotal();
             
-            if($grandTotal >= $minValToUsePoints) {
+            if($subTotal >= $minValToUsePoints) {
                 $model->debitPoints($orderId);
             }
 
