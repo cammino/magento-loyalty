@@ -5,12 +5,13 @@
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $grandTotal = $quote->getGrandTotal();
+        $subTotal = $quote->getSubtotal();
         $points = Mage::getModel("loyalty/points")->getAvailablePoints();
         $discount = $helper->calcDiscount($points);
         $_code = $this->getMethodCode();
     ?>
     <div class="checkout-loyalty-container">
-        <?php if($grandTotal < $minValToUsePoints): ?>
+        <?php if($subTotal < $minValToUsePoints): ?>
             <script> // Remove a forma de pagamento e não mostra o desconto
                 jQuery("#checkout-payment-method-load .payment-type.loyalty dt").remove();
             </script>
