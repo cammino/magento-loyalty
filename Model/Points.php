@@ -79,24 +79,26 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                     $total = $order->getGrandTotal() - $shippingAmount;
                 }
 
-                $points = $helper->calcPoints($total);
-                $data = array(
-                    "customer_id"       => $order->getCustomerId(),
-                    "order_id"          => $order->getId(),
-                    "direction"         => 'credit',
-                    "amount"            => $total,
-                    "points"            => $points,
-                    "money_to_point"    => $helper->getMoneyToPoint(),
-                    "point_to_money"    => $helper->getPointToMoney(),
-                    "status"            => 'pending',
-                    "created_at"        => $helper->getTimestamp(),
-                    "updated_at"        => $helper->getTimestamp(),
-                    "expires_at"        => date('Y-m-d H:i:s', strtotime($helper->getTimestamp() . ' + ' . $helper->getDaysToExpire() . ' days')),
-                );
+                if ($total > 0) {
+                    $points = $helper->calcPoints($total);
+                    $data = array(
+                        "customer_id"       => $order->getCustomerId(),
+                        "order_id"          => $order->getId(),
+                        "direction"         => 'credit',
+                        "amount"            => $total,
+                        "points"            => $points,
+                        "money_to_point"    => $helper->getMoneyToPoint(),
+                        "point_to_money"    => $helper->getPointToMoney(),
+                        "status"            => 'pending',
+                        "created_at"        => $helper->getTimestamp(),
+                        "updated_at"        => $helper->getTimestamp(),
+                        "expires_at"        => date('Y-m-d H:i:s', strtotime($helper->getTimestamp() . ' + ' . $helper->getDaysToExpire() . ' days')),
+                    );
 
-                $saved = $loyalty->setData($data)->save();
-                if(!$saved) {
-                    $helper->log("Erro ao salvar os pontos no banco após concluir o pedido: " . $order->getId());
+                    $saved = $loyalty->setData($data)->save();
+                    if(!$saved) {
+                        $helper->log("Erro ao salvar os pontos no banco após concluir o pedido: " . $order->getId());
+                    }
                 }
             }
         } catch (Exception $e) {
