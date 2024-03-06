@@ -21,7 +21,11 @@ class Cammino_Loyalty_CustomerController extends Mage_Core_Controller_Front_Acti
     public function viewAction()
     {                   
         $this->loadLayout();        
-        $this->getLayout()->getBlock('head')->setTitle('Meus Pontos');     
+        if (!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))) {
+            $this->getLayout()->getBlock('head')->setTitle('Meus Pontos');
+        } else {
+            $this->getLayout()->getBlock('head')->setTitle('Meu Crédito');
+        }
         $this->renderLayout();
     }
 }   

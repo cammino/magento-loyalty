@@ -54,14 +54,18 @@ class Cammino_Loyalty_Model_Job
             $customer = Mage::getModel('customer/customer')->load($credit->getCustomerId());
             $templateVars = array(
                 'points' => $credit->getPoints(),
-                'expiration_date' => date('d/m', strtotime($credit->getExpiresAt()))
+                'expiration_date' => date('d/m', strtotime($credit->getExpiresAt())),
+                'amount' => $credit->getAmount()
             );
-            $emailTemplate = Mage::getModel('core/email_template')->loadDefault('loyalty_email');
             $emailTemplate = Mage::getModel('core/email_template')->loadDefault('loyalty_email');
             $emailTemplate->setSenderEmail(Mage::getStoreConfig('trans_email/ident_general/email', $customer->getStoreId()));
             $emailTemplate->setSenderName(Mage::getStoreConfig('trans_email/ident_general/name', $customer->getStoreId()));
             $emailTemplate->setType('html');
-            $emailTemplate->setTemplateSubject('Seus pontos estão expirando!');
+            if (!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))) {
+                $emailTemplate->setTemplateSubject('Seus pontos estão expirando!');
+            } else {
+                $emailTemplate->setTemplateSubject('Seus créditos estão expirando!');
+            }
             $emailTemplate->setTemplateParams($templateVars);
             $emailTemplate->send($customer->getEmail(), $customer->getFirstname(), $templateVars);
         } catch (Exception $e) {

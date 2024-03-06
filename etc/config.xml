@@ -44,6 +44,11 @@
                     <file>loyalty.html</file>
                     <type>html</type>
                 </loyalty_email>
+                <loyalty_email_nopoints module="loyalty">
+                    <label>Loyalty</label>
+                    <file>loyaltynopoints.html</file>
+                    <type>html</type>
+                </loyalty_email_nopoints>
             </email>
         </template>
         <resources>

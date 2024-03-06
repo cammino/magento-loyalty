@@ -1,0 +1,25 @@
+<!--@subject @-->
+<!--@vars
+"var subject":"Subject",
+"var points": "points",
+"var amount": "amount",
+"var expiration_date": "expiration_date"
+@-->
+
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td class="action-content">
+            <p>Olá!</p>
+            <p>Você possui R${{var amount}} de créditos que irão expirar em {{var expiration_date}}.<br>
+            Aproveite para usar seus créditos e comprar com desconto em nossa loja.</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

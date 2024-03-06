@@ -18,9 +18,16 @@
         <?php elseif($discount >= $grandTotal && !$helper->hasLoyaltyDiscountApplied()): // mostra a forma de pagamento fake ?>
             <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none;">
                 <li>
-                    <p>
-                        Você tem <span class="my-points"><?php echo $points; ?> pontos</span> para serem utilizados, ou seja, <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto em seus pedidos<br> Ao selecionar essa opção, você irá pagar o seu <span class="bold">pedido por completo</span> usando apenas os seus pontos <br>
-                    </p>
+                    
+                    <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                        <p>
+                            Você tem <span class="my-points"><?php echo $points; ?> pontos</span> para serem utilizados, ou seja, <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto em seus pedidos<br> Ao selecionar essa opção, você irá pagar o seu <span class="bold">pedido por completo</span> usando apenas os seus pontos <br>
+                        </p>
+                    <?php else: ?>
+                        <p>
+                            Você tem <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto em seus pedidos<br> Ao selecionar essa opção, você irá usá-los para pagar o seu <span class="bold">pedido por completo</span><br>
+                        </p>
+                    <?php endif; ?>
                 </li>
             </ul>
         <?php else: ?>
@@ -39,10 +46,18 @@
                 <div id="apply_loyalty_discount" class="has-points-to-use-box <?php echo $boxClass; ?>">
                     <div class="box-header">
                         <div class="box-checkbox"></div>
-                        <h4>Usar meus pontos como desconto</h4>
+                        <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                            <h4>Usar meus pontos como desconto</h4>
+                        <?php else: ?>
+                            <h4>Usar meu crédito como desconto</h4>
+                        <?php endif; ?>
                     </div>
                     <div class="box-content">
-                        <p>Você tem <span class="my-points"><?php echo $points; ?> pontos</span>, ou seja <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto, clique aqui para aplicar</p>
+                        <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                            <p>Você tem <span class="my-points"><?php echo $points; ?> pontos</span>, ou seja <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de desconto, clique aqui para aplicar</p>
+                        <?php else: ?>
+                            <p>Você tem <span class="my-discount"><?php echo Mage::helper('core')->currency($discount, true, false); ?></span> de crédito, clique aqui para aplicar</p>
+                        <?php endif; ?>
                     </div>
                 </div>
 

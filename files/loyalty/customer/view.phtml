@@ -2,18 +2,28 @@
     <div class="dashboard">
         
         <div class="page-title">
-            <h1>Meus Pontos</h1>
+            <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                <h1>Meus Pontos</h1>
+            <?php else: ?>
+            <?php endif;?>
         </div>
     
         <div class="welcome-msg">
-            <p>Aqui você acompanha o histórico e movimentações de seus pontos</p>
+            <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                <p>Aqui você acompanha o histórico e movimentações de seus pontos</p>
+            <?php else: ?>
+                <p>Aqui você acompanha o histórico e movimentações de seus créditos</p>
+            <?php endif;?>
         </div>
 
         <div class="customer-loyalty-container">
 
             <div class="points-resume-box">
-                <div class="points"><?php echo $this->getMyPoints(); ?></div>
-                <div class="label">pontos</div>
+                <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                    <div class="points"><?php echo $this->getMyPoints(); ?></div>            
+                    <div class="label">pontos</div>
+                <?php else: ?>
+                <?php endif;?>
             </div>
 
             <?php if(count($this->getMyHistory()) > 0): ?>
@@ -25,7 +35,9 @@
                                 <li class="type"><?php echo $history["type"]; ?></li>
                                 <li class="order"><?php echo $history["order"]; ?></li>
                                 <li class="total"><?php echo $history["total"]; ?></li>
-                                <li class="points"><?php echo $history["points"]; ?></li>
+                                <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
+                                    <li class="points"><?php echo $history["points"]; ?></li>
+                                <?php endif;?>
                                 <li class="status"><?php echo $history["status"]; ?></li>
                                 <li class="date"><?php echo $history["date"]; ?></li>
                             </ul>

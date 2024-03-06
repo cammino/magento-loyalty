@@ -33,9 +33,17 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
         if(Mage::helper("loyalty")->hasLoyaltyDiscountApplied()) {
             $tax = $address->getWalletDebit();
 
+            $title = '';
+            
+            if (!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))) {
+                $title = 'Resgate de Pontos';
+            } else {
+                $title = 'Resgate de Créditos';
+            }
+
             $address->addTotal(array(
                 'code' => $this->getCode(),
-                'title' => Mage::helper('checkout')->__('Resgate de Pontos'),
+                'title' => Mage::helper('checkout')->__($title),
                 'value' => $tax
             ));
         }
