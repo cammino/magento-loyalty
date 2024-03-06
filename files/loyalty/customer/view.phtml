@@ -5,6 +5,7 @@
             <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
                 <h1>Meus Pontos</h1>
             <?php else: ?>
+                <h1>Meu Crédito</h1>
             <?php endif;?>
         </div>
     
@@ -20,9 +21,15 @@
 
             <div class="points-resume-box">
                 <?php if(!empty(Mage::getStoreConfig('loyalty/advanced/show_points'))): ?>
-                    <div class="points"><?php echo $this->getMyPoints(); ?></div>            
+                    <div class="points"><?php echo $this->getMyPoints(); ?></div>
                     <div class="label">pontos</div>
                 <?php else: ?>
+                    <?php
+                    $_coreHelper = $this->helper('core');
+                        $pointToMoney = (float) Mage::getStoreConfig('loyalty/points/point_to_money');
+                        $totalCredit = (float) (floor(($this->getMyPoints() / $pointToMoney) * 100) / 100);
+                    ?>
+                    <div class="points" style="font-size: 41px;"><?php echo $_coreHelper->currency($totalCredit, true, true); ?></div>
                 <?php endif;?>
             </div>
 

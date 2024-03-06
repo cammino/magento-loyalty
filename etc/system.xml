@@ -7,6 +7,28 @@
         </loyalty>
     </tabs>
     <sections>
+        <payment>
+            <groups>
+                <loyalty translate="label" module="loyalty">
+                    <label>Programa fidelidade</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                    </fields>
+                </loyalty>
+            </groups>
+        </payment>
         <loyalty translate="label" module="loyalty">
             <label>Configuração</label>
             <tab>loyalty</tab>
@@ -23,7 +45,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
- 
+
                     <fields>
                         <active translate="label">
                             <label>Habilitado</label>
@@ -44,7 +66,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </firstname_attr_id>
-                        
+
                         <lastname_attr_id translate="label">
                             <label>ID do atributo "Lastname"</label>
                             <comment>SELECT attribute_id FROM eav_attribute WHERE attribute_code = "lastname" ORDER BY attribute_id LIMIT 1;</comment>
@@ -64,7 +86,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
- 
+
                     <fields>
                         <money_to_point translate="label">
                             <label>Real para Ponto</label>
@@ -83,7 +105,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </point_to_money>                        
+                        </point_to_money>
                     </fields>
                 </points>
                 <advanced translate="label" module="loyalty">
