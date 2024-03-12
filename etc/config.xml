@@ -36,6 +36,11 @@
                     </loyalty>
                 </entities>
             </loyalty_mysql4>
+            <salesrule>
+                <rewrite>
+                    <rule_condition_address>Cammino_Loyalty_Model_Rule_Condition_Address</rule_condition_address>
+                </rewrite>
+            </salesrule>
 		</models>
         <template>
             <email>
