@@ -243,6 +243,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </discount_percentage>
+                        <discount_text_with_payment translate="label">
+                            <label>Texto no desconto de resgate com desconto de pagamento</label>
+                            <comment>Texto a ser adicionado na frente do "Resgate de pontos" quando existe um desconto extra no restante pela forma de pagamento.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </discount_text_with_payment>
                     </fields>
                 </advanced>
             </groups>

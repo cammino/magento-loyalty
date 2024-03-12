@@ -217,11 +217,17 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     
     public function getDiscountPaymentMethods()
     {
-        return (bool) Mage::getStoreConfig('loyalty/advanced/discount_payment_methods');
+        return Mage::getStoreConfig('loyalty/advanced/discount_payment_methods');
     }
     
     public function getDiscountPercentage()
     {
-        return (bool) Mage::getStoreConfig('loyalty/advanced/discount_percentage');
+        return Mage::getStoreConfig('loyalty/advanced/discount_percentage');
     }
+
+    public function getDiscountTextWithPayment()
+    {
+        return Mage::getStoreConfig('loyalty/advanced/discount_text_with_payment');
+    }
+
 }

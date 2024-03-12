@@ -19,16 +19,16 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
 
         $quote = $address->getQuote($discount);
 
-        Mage::log($helper->getDiscountPercentage(), null, 'ldiscount.log');
-        Mage::log($helper->getDiscountPaymentMethods(), null, 'ldiscount.log');
-
-        if ($discount > 0) {
-//            if ($quote->getPayment()->getMethodInstance()->getCode() == 'openpix_pix') {
-//                $subTotal = $quote->getSubtotal(); //3000
-//                $subTotalWithLoyalty = $subTotal + $discount;
-//                $pixDiscount = $subTotalWithLoyalty * 0.05;
-//                $discount = $discount - $pixDiscount;
-//            }
+        if (($discount < 0) && (strpos($helper->getDiscountPaymentMethods(), $quote->getPayment()->getMethodInstance()->getCode()) !== false)) {
+            $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals();
+            $subTotal = $totals["subtotal"]->getValue();
+            $subTotal = $subTotal + $totals["shipping"]->getValue();
+            $subTotalWithLoyalty = $subTotal + $discount;
+            $paymentMethodDiscount = ($helper->getDiscountPercentage() / 100) * $subTotalWithLoyalty;
+            $discount = $discount - $paymentMethodDiscount;
+            Mage::getSingleton('core/session')->setLoyaltyPaymentMethodDiscount(true);
+        } else {
+            Mage::getSingleton('core/session')->setLoyaltyPaymentMethodDiscount(false);
         }
         
 
@@ -46,7 +46,8 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
 
   
     public function fetch(Mage_Sales_Model_Quote_Address $address) {
-        if(Mage::helper("loyalty")->hasLoyaltyDiscountApplied()) {
+        $helper = Mage::helper("loyalty");
+        if($helper->hasLoyaltyDiscountApplied()) {
             $tax = $address->getWalletDebit();
 
             $title = '';
@@ -55,6 +56,10 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
                 $title = 'Resgate de Pontos';
             } else {
                 $title = 'Resgate de Créditos';
+            }
+
+            if (Mage::getSingleton('core/session')->getLoyaltyPaymentMethodDiscount()) {
+                $title = $title . ' ' . $helper->getDiscountTextWithPayment();
             }
 
             $address->addTotal(array(
