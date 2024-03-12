@@ -214,4 +214,14 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (bool) Mage::getStoreConfig('loyalty/advanced/shipping_discount');
     }
+    
+    public function getDiscountPaymentMethods()
+    {
+        return (bool) Mage::getStoreConfig('loyalty/advanced/discount_payment_methods');
+    }
+    
+    public function getDiscountPercentage()
+    {
+        return (bool) Mage::getStoreConfig('loyalty/advanced/discount_percentage');
+    }
 }

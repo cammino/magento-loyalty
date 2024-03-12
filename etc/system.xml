@@ -225,6 +225,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </shipping_discount>
+                        <discount_payment_methods translate="label">
+                            <label>Métodos de pagamento com desconto no valor restante</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allmethods</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </discount_payment_methods>
+                        <discount_percentage translate="label">
+                            <label>Porcentagem de desconto no valor restante</label>
+                            <comment>Aumenta o desconto dado ao aplicar o uso dos pontos na porcentagem informada caso a forma de pagamento do valor restante seja uma das selecionadas acima</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </discount_percentage>
                     </fields>
                 </advanced>
             </groups>

@@ -6,16 +6,32 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
     public function collect(Mage_Sales_Model_Quote_Address $address) {
         parent::collect($address);
 
+        $helper = Mage::helper("loyalty");
+
         if (!count($this->_getAddressItems($address)))
             return $this;
         
         if(Mage::helper("loyalty")->hasLoyaltyDiscountApplied()) {
-            $discount = -Mage::helper("loyalty")->getLoyaltyDiscount();
+            $discount = -Mage::helper("loyalty")->getLoyaltyDiscount(); //1990
         } else {
             $discount = 0;
         }
 
         $quote = $address->getQuote($discount);
+
+        Mage::log($helper->getDiscountPercentage(), null, 'ldiscount.log');
+        Mage::log($helper->getDiscountPaymentMethods(), null, 'ldiscount.log');
+
+        if ($discount > 0) {
+//            if ($quote->getPayment()->getMethodInstance()->getCode() == 'openpix_pix') {
+//                $subTotal = $quote->getSubtotal(); //3000
+//                $subTotalWithLoyalty = $subTotal + $discount;
+//                $pixDiscount = $subTotalWithLoyalty * 0.05;
+//                $discount = $discount - $pixDiscount;
+//            }
+        }
+        
+
         $quote->setLoyaltytax($discount);
         $quote->setBaseLoyaltytax($discount);
 
