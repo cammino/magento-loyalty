@@ -1,5 +1,5 @@
 <?php
-class Custom_Module_Model_Rule_Condition_Address extends Mage_SalesRule_Model_Rule_Condition_Address
+class Cammino_Loyalty_Model_Rule_Condition_Address extends Mage_SalesRule_Model_Rule_Condition_Address
 {
 
     public function loadAttributeOptions()
