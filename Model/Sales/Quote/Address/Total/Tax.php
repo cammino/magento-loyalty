@@ -22,7 +22,11 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
         if (($discount < 0) && (strpos($helper->getDiscountPaymentMethods(), $quote->getPayment()->getMethodInstance()->getCode()) !== false)) {
             $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals();
             $subTotal = $totals["subtotal"]->getValue();
-            $subTotal = $subTotal + $totals["shipping"]->getValue();
+            $shipping = 0;
+            if(!empty($totals["shipping"])) {
+                $shipping = $totals["shipping"]->getValue();
+            }
+            $subTotal = $subTotal + $shipping;
             $subTotalWithLoyalty = $subTotal + $discount;
             $paymentMethodDiscount = ($helper->getDiscountPercentage() / 100) * $subTotalWithLoyalty;
             $discount = $discount - $paymentMethodDiscount;
