@@ -8,14 +8,26 @@
         $subTotal = $quote->getSubtotal();
         $points = Mage::getModel("loyalty/points")->getAvailablePoints();
         $discount = $helper->calcDiscount($points);
-        $_code = $this->getMethodCode();
+        $_code = $this->getMethodCode();        
+        $hasPixDiscount = false;
+        $appliedRuleIds = $quote->getAppliedRuleIds();
+        $_pixRuleId = Mage::app()->getStore()->getConfig("catalog/pixdiscount/ruleid");
+        if ($appliedRuleIds == $_pixRuleId) {
+            $hasPixDiscount = true;
+        } else {
+            $hasPixDiscount = false;
+        }
     ?>
     <div class="checkout-loyalty-container">
         <?php if($subTotal < $minValToUsePoints): ?>
             <script> // Remove a forma de pagamento e não mostra o desconto
                 jQuery("#checkout-payment-method-load .payment-type.loyalty dt").remove();
             </script>
-        <?php elseif($discount >= $grandTotal && !$helper->hasLoyaltyDiscountApplied()): // mostra a forma de pagamento fake ?>
+            <?php elseif(
+                (($discount >= $grandTotal) && (empty($hasPixDiscount) && !$helper->hasLoyaltyDiscountApplied()))
+                 || 
+                ($discount >= ($quote->getSubtotal() + $quote->getShippingAddress()->getShippingAmount()) && !$helper->hasLoyaltyDiscountApplied())
+            ): ?>
             <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display: none;">
                 <li>
                     
@@ -63,6 +75,9 @@
 
                 <script>
 
+
+
+
                     function setLoyaltyCookie(name, value, minutes) {
                         var d = new Date;
                         d.setTime(d.getTime() + (minutes * 60 * 1000));
@@ -73,6 +88,7 @@
                         var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
                         return v ? v[2] : null;
                     }
+
 
                     jQuery("#apply_loyalty_discount").on("click", function(e) {
                         e.preventDefault();
@@ -101,6 +117,16 @@
                             console.log(data.message);
                         });
                     });
+
+                    // Verifica se o discount é maior que o grandtotal caso tenha desconto já aplicado, desaplica o desconto
+                    <?php if($discount >= ($grandTotal + $discount)): ?>
+                        console.log('<?php echo $grandTotal; ?>');
+                        jQuery(document).ready(function($) {
+                            if ($("#apply_loyalty_discount").hasClass("active")) {
+                                jQuery("#apply_loyalty_discount").trigger("click");
+                            }
+                        });
+                    <?php endif; ?>
 
                     // Verifica se é o primeiro acesso no checkout e marca a opção para usar desconto sozinho
                     setTimeout(function() {
