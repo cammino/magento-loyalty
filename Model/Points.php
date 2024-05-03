@@ -25,7 +25,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
 
-            $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) > DATE(NOW()))");
+            $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) >= DATE(NOW()))");
 
             $total = 0;
 
