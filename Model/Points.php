@@ -46,12 +46,19 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 ->addFieldToFilter('customer_id', $customerId);
             $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled' AND id > ".$firstValidCreditId.")");
             
+            Mage::log('calculando pontos do cliente', null, 'loyalty_creditsused.log');
             foreach($collectionDebit as $item) {
                 $creditsUsed = json_decode($item->getCreditsUsed(), true);
-                foreach($creditsUsed as $index => $value) {
-                    if(in_array($index, $collectionCreditIds)) {
-                        $total += $value;
+                Mage::log('debito: ' . $item->getId(), null, 'loyalty_creditsused.log');
+                if (!empty($creditsUsed)) {
+                    Mage::log('credits used nele: ' . $creditsUsed, null, 'loyalty_creditsused.log');
+                    foreach($creditsUsed as $index => $value) {
+                        if(in_array($index, $collectionCreditIds)) {
+                            $total += $value;
+                        }
                     }
+                } else {
+                    $total += $item->getPoints();
                 }
             }
             
@@ -60,6 +67,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
     }
 
     private function getCreditsUsed($pointsUsed) {
+        Mage::log('credits used: ' . $pointsUsed, null, 'loyalty_creditsused.log');
         $customerData = Mage::getSingleton('customer/session')->getCustomer();
         $customerId = $customerData->getId();
         
@@ -85,13 +93,14 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 }
             }
             if ($pointsUsed >= $item->getPoints()) {
-                $creditsUsed[$item->getId()] = $item->getPoints();
+                $creditsUsed[$item->getId()] = $item->getPoints() * -1;
                 $pointsUsed = $pointsUsed - $item->getPoints();
             } else if ($pointsUsed > 0) {
-                $creditsUsed[$item->getId()] = $pointsUsed;
+                $creditsUsed[$item->getId()] = $pointsUsed * -1;
                 $pointsUsed = 0;
             }
         }
+        Mage::log(json_encode($creditsUsed, true), null, 'loyalty_creditsused.log');
         return json_encode($creditsUsed, true);
     }
 
