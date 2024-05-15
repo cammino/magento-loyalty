@@ -25,9 +25,11 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
 
-            $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) >= DATE(NOW()))");
+                $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) >= DATE(NOW()))");
 
             $total = 0;
+
+            $collectionCreditIds = [];
 
             $i = 0;
             $firstValidCreditId = 0;
@@ -37,6 +39,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 }
                 $total += $item->getPoints();
                 $i++;
+                $collectionCreditIds[] = $item->getId();
             }
 
             $collectionDebit = Mage::getModel("loyalty/loyalty")->getCollection()
@@ -44,11 +47,52 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled' AND id > ".$firstValidCreditId.")");
             
             foreach($collectionDebit as $item) {
-                $total += $item->getPoints();
+                $creditsUsed = json_decode($item->getCreditsUsed(), true);
+                foreach($creditsUsed as $index => $value) {
+                    if(in_array($index, $collectionCreditIds)) {
+                        $total += $value;
+                    }
+                }
             }
             
             return $total;
         }
+    }
+
+    private function getCreditsUsed($pointsUsed) {
+        $customerData = Mage::getSingleton('customer/session')->getCustomer();
+        $customerId = $customerData->getId();
+        
+        $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
+            ->addFieldToFilter('customer_id', $customerId);
+        $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) > DATE(NOW()))");
+
+        $creditsUsed = [];
+
+        $firstValidCreditId = $collectionCredit->getFirstItem()->getId();
+        $collectionDebit = Mage::getModel("loyalty/loyalty")->getCollection()
+            ->addFieldToFilter('customer_id', $customerId);
+        $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled' AND id > ".$firstValidCreditId.")");
+
+        foreach($collectionCredit as $item) {
+            $remainingPointsOnCredit = $item->getPoints();
+            foreach($collectionDebit as $debit) {
+                $debitCreditsUsed = json_decode($debit->getCreditsUsed(), true);
+                foreach ($debitCreditsUsed as $index => $value) {
+                    if ($index == $item->getId()) {
+                        $remainingPointsOnCredit = $remainingPointsOnCredit - $value;
+                    }
+                }
+            }
+            if ($pointsUsed >= $item->getPoints()) {
+                $creditsUsed[$item->getId()] = $item->getPoints();
+                $pointsUsed = $pointsUsed - $item->getPoints();
+            } else if ($pointsUsed > 0) {
+                $creditsUsed[$item->getId()] = $pointsUsed;
+                $pointsUsed = 0;
+            }
+        }
+        return json_encode($creditsUsed, true);
     }
 
     /**
@@ -64,7 +108,6 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
             $order = Mage::getModel('sales/order')->load($orderId);
             $code = $order->getPayment()->getMethodInstance()->getCode();
 
-            // Only generate points if is not loyalty payment method
             if($code != "loyalty") {
                 $helper = Mage::helper("loyalty");
                 $loyalty = Mage::getModel("loyalty/loyalty");
@@ -143,6 +186,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                     "money_to_point"    => $helper->getMoneyToPoint(),
                     "point_to_money"    => $helper->getPointToMoney(),
                     "status"            => $status,
+                    "credits_used"      => $this->getCreditsUsed($points),
                     "created_at"        => $helper->getTimestamp(),
                     "updated_at"        => $helper->getTimestamp(),
                 );
