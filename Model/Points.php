@@ -46,12 +46,9 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 ->addFieldToFilter('customer_id', $customerId);
             $collectionDebit->getSelect()->where("(direction = 'debit' AND status != 'canceled' AND id > ".$firstValidCreditId.")");
             
-            Mage::log('calculando pontos do cliente', null, 'loyalty_creditsused.log');
             foreach($collectionDebit as $item) {
                 $creditsUsed = json_decode($item->getCreditsUsed(), true);
-                Mage::log('debito: ' . $item->getId(), null, 'loyalty_creditsused.log');
                 if (!empty($creditsUsed)) {
-                    Mage::log('credits used nele: ' . $creditsUsed, null, 'loyalty_creditsused.log');
                     foreach($creditsUsed as $index => $value) {
                         if(in_array($index, $collectionCreditIds)) {
                             $total += $value;
@@ -67,13 +64,12 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
     }
 
     private function getCreditsUsed($pointsUsed) {
-        Mage::log('credits used: ' . $pointsUsed, null, 'loyalty_creditsused.log');
         $customerData = Mage::getSingleton('customer/session')->getCustomer();
         $customerId = $customerData->getId();
         
         $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
             ->addFieldToFilter('customer_id', $customerId);
-        $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND DATE(expires_at) > DATE(NOW()))");
+        $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND created_at >= '2024-05-16' AND DATE(expires_at) > DATE(NOW()))");
 
         $creditsUsed = [];
 
@@ -88,19 +84,18 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                 $debitCreditsUsed = json_decode($debit->getCreditsUsed(), true);
                 foreach ($debitCreditsUsed as $index => $value) {
                     if ($index == $item->getId()) {
-                        $remainingPointsOnCredit = $remainingPointsOnCredit - $value;
+                        $remainingPointsOnCredit = $remainingPointsOnCredit + $value;
                     }
                 }
             }
-            if ($pointsUsed >= $item->getPoints()) {
-                $creditsUsed[$item->getId()] = $item->getPoints() * -1;
-                $pointsUsed = $pointsUsed - $item->getPoints();
+            if ($pointsUsed >= $remainingPointsOnCredit) {
+                $creditsUsed[$item->getId()] = $remainingPointsOnCredit * -1;
+                $pointsUsed = $pointsUsed - $remainingPointsOnCredit;
             } else if ($pointsUsed > 0) {
                 $creditsUsed[$item->getId()] = $pointsUsed * -1;
                 $pointsUsed = 0;
             }
         }
-        Mage::log(json_encode($creditsUsed, true), null, 'loyalty_creditsused.log');
         return json_encode($creditsUsed, true);
     }
 
@@ -195,9 +190,9 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
                     "money_to_point"    => $helper->getMoneyToPoint(),
                     "point_to_money"    => $helper->getPointToMoney(),
                     "status"            => $status,
-                    "credits_used"      => $this->getCreditsUsed($points),
                     "created_at"        => $helper->getTimestamp(),
                     "updated_at"        => $helper->getTimestamp(),
+                    "credits_used"      => $this->getCreditsUsed($points),
                 );
 
                 $saved = $loyalty->setData($data)->save();
