@@ -66,11 +66,17 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
     private function getCreditsUsed($pointsUsed) {
         $customerData = Mage::getSingleton('customer/session')->getCustomer();
         $customerId = $customerData->getId();
+
+        if (!empty(Mage::getStoreConfig('loyalty/advanced/credits_used_date'))) {
+            $creditsUsedDate = Mage::getStoreConfig('loyalty/advanced/credits_used_date');
+        } else {
+            $creditsUsedDate = '2024-05-16';
+        }
         
         $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
             ->addFieldToFilter('customer_id', $customerId);
-        $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND created_at >= '2024-05-16' AND DATE(expires_at) > DATE(NOW()))");
-
+        $collectionCredit->getSelect()->where("(direction = 'credit' AND status = 'approved' AND created_at >= '".$creditsUsedDate."' AND DATE(expires_at) > DATE(NOW()))");
+        
         $creditsUsed = [];
 
         $firstValidCreditId = $collectionCredit->getFirstItem()->getId();

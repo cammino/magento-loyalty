@@ -143,6 +143,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </days_to_expire>
+                        <credits_used_date translate="label">
+                            <label>Data para créditos usados</label>
+                            <comment>Data usada para filtrar a collection de créditos usados (YYYY-MM-DD)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </credits_used_date>
                         <notice_one translate="label">
                             <label>Dias faltando para enviar primeiro lembrete de expiração por e-mail</label>
                             <comment>Deixar 0 ou vazio para não enviar</comment>
