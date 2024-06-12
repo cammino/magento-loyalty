@@ -44,18 +44,21 @@ class Cammino_Loyalty_Model_Observer
         
         $minValToGeneratePoints = $helper->getMinValToGeneratePoints();
         $minValToUsePoints = $helper->getMinValToUsePoints();
-        
+
         if($helper->isActive()) {
             $orderId = $observer->getOrder()->getId();
             $order = Mage::getModel('sales/order')->load($orderId);
             $grandTotal = $order->getGrandTotal();
             $subTotal = $order->getSubtotal();
-            
             if($subTotal >= $minValToUsePoints) {
                 $model->debitPoints($orderId);
             }
 
             if($grandTotal >= $minValToGeneratePoints) {
+                $allowedMethodsArray = explode(',', Mage::getStoreConfig('loyalty/general/payment_methods_allowed_generate'));
+                if(!in_array($order->getPayment()->getMethod(), $allowedMethodsArray)) {
+                    return;
+                }
                 $model->generatePoints($orderId);
             }
         }
