@@ -3,6 +3,9 @@ class Cammino_Loyalty_Block_Adminhtml_Sales_Order_Totals extends Mage_Adminhtml_
 {
     protected function _initTotals() {
         parent::_initTotals();
+        if (empty(Mage::getStoreConfig('loyalty/general/active'))) {
+            return $this;
+        }
         $tax = abs(floatval($this->getSource()->getLoyaltytax()));
         if($tax > 0) {
             if (strpos($this->getOrder()->getPayment()->getMethodInstance()->getCode(), 'pix') !== false) {
