@@ -46,8 +46,8 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
             $quote->setLoyaltytax($discount);
             $quote->setBaseLoyaltytax($discount);
 
-            $address->setGrandTotal($discount);
-            $address->setBaseGrandTotal($discount);
+            $address->setGrandTotal($address->getGrandTotal() + $discount);
+            $address->setBaseGrandTotal($address->getGrandTotal() + $discount);
 
             $address->setWalletDebit($discount);
             $address->setBaseWalletDebit($discount);
