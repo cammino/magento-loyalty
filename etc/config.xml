@@ -109,6 +109,14 @@
                     </loyalty_order_canceled>
                 </observers>
             </sales_order_payment_cancel>
+            <sales_order_creditmemo_save_after>
+                <observers>
+                    <loyalty_order_refunded>
+                        <class>loyalty/observer</class>
+                        <method>orderRefunded</method>
+                    </loyalty_order_refunded>
+                </observers>
+            </sales_order_creditmemo_save_after>
             <payment_method_is_active>
                 <observers>
                     <loyalty_payment_method_is_active>
