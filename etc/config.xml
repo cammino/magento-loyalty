@@ -222,7 +222,7 @@
         <jobs>
             <loyalty_job>
                 <schedule>
-                    <cron_expr>0 12 * * *</cron_expr>
+                    <cron_expr>30 12 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>loyalty/job::notify</model>
