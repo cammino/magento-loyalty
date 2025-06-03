@@ -61,6 +61,20 @@ class Cammino_Loyalty_Model_Observer
                 }
                 $model->generatePoints($orderId);
             }
+
+            if ($order->getPayment()->getMethod() == 'loyalty' && $order->canInvoice()) {
+                $invoice = $order->prepareInvoice();
+                $invoice->register();
+                $invoice->capture();
+
+                Mage::getModel('core/resource_transaction')
+                    ->addObject($invoice)
+                    ->addObject($order)
+                    ->save();
+
+                $order->addStatusHistoryComment('Invoice gerada automaticamente pelo método de pagamento.');
+                $order->save();
+            }
         }
     }
 
