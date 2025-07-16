@@ -12,8 +12,8 @@ class Cammino_Loyalty_Block_Adminhtml_Sales_Order_Totals extends Mage_Adminhtml_
         if ($paymentMethod == 'loyalty') {
             $this->_totals['total_loyalty'] = new Varien_Object(array(
                 'code' => 'total_loyalty',
-                'value' => ($order->getSubtotal() + $order->getShippingAmount() + $order->getTaxAmount() - $order->getDiscountAmount()) * -1,
-                'base_value' => ($order->getSubtotal() + $order->getShippingAmount() + $order->getTaxAmount() - $order->getDiscountAmount()) * -1,
+                'value' => ($order->getSubtotal() + $order->getShippingAmount() + $order->getTaxAmount() + $order->getDiscountAmount()) * -1,
+                'base_value' => ($order->getSubtotal() + $order->getShippingAmount() + $order->getTaxAmount() + $order->getDiscountAmount()) * -1,
                 'label' => $this->helper('sales')->__('Desconto Loyalty')
             ));
         }
