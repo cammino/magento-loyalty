@@ -19,6 +19,20 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
 
         $quote = $address->getQuote($discount);
 
+        $appliedRuleIds = $quote->getAppliedRuleIds();
+
+        $allPercentDiscounts = [];
+        foreach ($quote->getAllItems() as $item) {
+            $appliedRuleIds = explode(',', $item->getAppliedRuleIds());
+            foreach ($appliedRuleIds as $ruleId) {
+                if (!$ruleId) continue;
+                $rule = Mage::getModel('salesrule/rule')->load($ruleId);
+                if ($rule->getSimpleAction() == Mage_SalesRule_Model_Rule::BY_PERCENT_ACTION) {
+                    $allPercentDiscounts[$ruleId] = $rule->getDiscountAmount(); // %
+                }
+            }
+        }
+
         if (($discount < 0) && (strpos($helper->getDiscountPaymentMethods(), $quote->getPayment()->getMethodInstance()->getCode()) !== false)) {
             $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals();
             $subTotal = $totals["subtotal"]->getValue();
@@ -28,13 +42,14 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
             }
             $subTotal = $subTotal + $shipping;
             $subTotalWithLoyalty = $subTotal + $discount;
+            foreach ($allPercentDiscounts as $pctD) {
+                $subTotalWithLoyalty = number_format(($subTotalWithLoyalty - ($pctD / 100) * $subTotal), 2);
+            }
             $paymentMethodDiscount = ($helper->getDiscountPercentage() / 100) * $subTotalWithLoyalty;
             $discount = $discount - $paymentMethodDiscount;
-            Mage::getSingleton('core/session')->setLoyaltyPaymentMethodDiscount(true);
         } else {
             Mage::getSingleton('core/session')->setLoyaltyPaymentMethodDiscount(false);
         }
-        
 
         $quote->setLoyaltytax($discount);
         $quote->setBaseLoyaltytax($discount);
