@@ -21,20 +21,23 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
 
         $appliedRuleIds = $quote->getAppliedRuleIds();
 
-        $allPercentDiscounts = [];
+//        $allPercentDiscounts = [];
         $allDiscountsValues = [];
         foreach ($quote->getAllItems() as $item) {
-            $appliedRuleIds = explode(',', $item->getAppliedRuleIds());
-            foreach ($appliedRuleIds as $ruleId) {
-                if (!$ruleId) continue;
-                $rule = Mage::getModel('salesrule/rule')->load($ruleId);
-                if ($rule->getSimpleAction() == Mage_SalesRule_Model_Rule::BY_PERCENT_ACTION) {
-                    $allPercentDiscounts[$ruleId] = $rule->getDiscountAmount();
-                }
-                $allDiscountsValues[$ruleId] = $item->getDiscountAmount();
-            }
-
+            $discountAmount = $item->getDiscountAmount();
+            $allDiscountsValues[] = $discountAmount;
+//            $appliedRuleIds = explode(',', $item->getAppliedRuleIds());
+//            foreach ($appliedRuleIds as $ruleId) {
+//                if (!$ruleId) continue;
+//                if (!isset($allPercentDiscounts[$ruleId])) {
+//                    $rule = Mage::getModel('salesrule/rule')->load($ruleId);
+//                    if ($rule->getSimpleAction() == Mage_SalesRule_Model_Rule::BY_PERCENT_ACTION) {
+//                        $allPercentDiscounts[$ruleId] = $rule->getDiscountAmount();
+//                    }
+//                }
+//            }
         }
+
         if (($discount < 0) && (strpos($helper->getDiscountPaymentMethods(), $quote->getPayment()->getMethodInstance()->getCode()) !== false)) {
             $totals = Mage::getSingleton('checkout/session')->getQuote()->getTotals();
             $subTotal = $totals["subtotal"]->getValue();
