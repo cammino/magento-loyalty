@@ -46,18 +46,28 @@ class Cammino_Loyalty_Model_Sales_Quote_Address_Total_Tax extends Mage_Sales_Mod
                 $shipping = $totals["shipping"]->getValue();
             }
             $subTotal = $subTotal + $shipping;
+            Mage::log('subTotal: ' . $subTotal, null, 'loyalty_discount.log');
             $subTotalWithLoyalty = $subTotal + $discount;
+            Mage::log('loyalty: ' . $discount, null, 'loyalty_discount.log');
+            Mage::log('subTotalWithLoyalty: ' . $subTotalWithLoyalty, null, 'loyalty_discount.log');
 //            foreach ($allPercentDiscounts as $pctD) {
 //                $subTotalWithLoyaltyantigo = number_format(($subTotalWithLoyalty - (($pctD / 100) * $subTotal)), 2);
 //            }
+            $totalDiscountValue = 0;
             foreach ($allDiscountsValues as $discountedAmount) {
-                $subTotalWithLoyalty = number_format(($subTotalWithLoyalty - $discountedAmount), 2);
+                $totalDiscountValue = $totalDiscountValue + $discountedAmount;
             }
+            Mage::log('totalDiscountValue: ' . $totalDiscountValue, null, 'loyalty_discount.log');
+            $subTotalWithLoyalty = $subTotalWithLoyalty - $totalDiscountValue;
+            Mage::log('subTotalWithLoyalty+totaldiscount: ' . $subTotalWithLoyalty, null, 'loyalty_discount.log');
+            Mage::log('$helper->getDiscountPercentage(): ' . $helper->getDiscountPercentage(), null, 'loyalty_discount.log');
             $paymentMethodDiscount = ($helper->getDiscountPercentage() / 100) * $subTotalWithLoyalty;
-            $discount = number_format($discount - $paymentMethodDiscount, 2);
+            Mage::log('desconto da forma de pagamento então fica: ' . $paymentMethodDiscount, null, 'loyalty_discount.log');
+            $discount = $discount - $paymentMethodDiscount;
         } else {
             Mage::getSingleton('core/session')->setLoyaltyPaymentMethodDiscount(false);
         }
+        Mage::log('desconto loyalty final: ' . $discount, null, 'loyalty_discount.log');
         $quote->setLoyaltytax($discount);
         $quote->setBaseLoyaltytax($discount);
 
