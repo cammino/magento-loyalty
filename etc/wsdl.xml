@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="loyaltyPointsEntryEntity">
+                <all>
+                    <element name="id" type="xsd:int" minOccurs="0" />
+                    <element name="customer_id" type="xsd:int" minOccurs="0" />
+                    <element name="direction" type="xsd:string" minOccurs="0" />
+                    <element name="points" type="xsd:int" minOccurs="0" />
+                    <element name="amount" type="xsd:double" minOccurs="0" />
+                    <element name="expires_at" type="xsd:string" minOccurs="0" />
+                    <element name="balance_points" type="xsd:int" minOccurs="0" />
+                    <element name="balance_amount" type="xsd:double" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="loyaltyPointsBalanceEntity">
+                <all>
+                    <element name="customer_id" type="xsd:int" minOccurs="0" />
+                    <element name="points" type="xsd:int" minOccurs="0" />
+                    <element name="amount" type="xsd:double" minOccurs="0" />
+                </all>
+            </complexType>
+        </schema>
+    </types>
+    <message name="loyaltyPointsAddRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="customerId" type="xsd:int" />
+        <part name="amount" type="xsd:double" />
+        <part name="expiresAt" type="xsd:string" />
+    </message>
+    <message name="loyaltyPointsAddResponse">
+        <part name="result" type="typens:loyaltyPointsEntryEntity" />
+    </message>
+    <message name="loyaltyPointsRemoveRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="customerId" type="xsd:int" />
+        <part name="amount" type="xsd:double" />
+    </message>
+    <message name="loyaltyPointsRemoveResponse">
+        <part name="result" type="typens:loyaltyPointsEntryEntity" />
+    </message>
+    <message name="loyaltyPointsBalanceRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="customerId" type="xsd:int" />
+    </message>
+    <message name="loyaltyPointsBalanceResponse">
+        <part name="result" type="typens:loyaltyPointsBalanceEntity" />
+    </message>
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="loyaltyPointsAdd">
+            <documentation>Add credits to a customer</documentation>
+            <input message="typens:loyaltyPointsAddRequest" />
+            <output message="typens:loyaltyPointsAddResponse" />
+        </operation>
+        <operation name="loyaltyPointsRemove">
+            <documentation>Remove credits from a customer</documentation>
+            <input message="typens:loyaltyPointsRemoveRequest" />
+            <output message="typens:loyaltyPointsRemoveResponse" />
+        </operation>
+        <operation name="loyaltyPointsBalance">
+            <documentation>Retrieve customer balance</documentation>
+            <input message="typens:loyaltyPointsBalanceRequest" />
+            <output message="typens:loyaltyPointsBalanceResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="loyaltyPointsAdd">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="loyaltyPointsRemove">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="loyaltyPointsBalance">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+</definitions>

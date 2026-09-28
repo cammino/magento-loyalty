@@ -14,14 +14,17 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
     /**
     * Function responsible return sum all user points
     *
+    * @param int|null $customerId Customer Id (logged in customer when null)
+    *
     * @return int
     */
-    public function getAvailablePoints()
+    public function getAvailablePoints($customerId = null)
     {
-        if(Mage::getSingleton('customer/session')->isLoggedIn()) {
-            $customerData = Mage::getSingleton('customer/session')->getCustomer();
-            $customerId = $customerData->getId();
-            
+        if ($customerId === null && Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
+        }
+
+        if($customerId) {
             $collectionCredit = Mage::getModel("loyalty/loyalty")->getCollection()
                 ->addFieldToFilter('customer_id', $customerId);
 
@@ -63,9 +66,10 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
         }
     }
 
-    private function getCreditsUsed($pointsUsed) {
-        $customerData = Mage::getSingleton('customer/session')->getCustomer();
-        $customerId = $customerData->getId();
+    public function getCreditsUsed($pointsUsed, $customerId = null) {
+        if ($customerId === null) {
+            $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
+        }
 
         if (!empty(Mage::getStoreConfig('loyalty/advanced/credits_used_date'))) {
             $creditsUsedDate = Mage::getStoreConfig('loyalty/advanced/credits_used_date');
@@ -87,7 +91,7 @@ class Cammino_Loyalty_Model_Points extends Mage_Core_Model_Abstract
         foreach($collectionCredit as $item) {
             $remainingPointsOnCredit = $item->getPoints();
             foreach($collectionDebit as $debit) {
-                $debitCreditsUsed = json_decode($debit->getCreditsUsed(), true);
+                $debitCreditsUsed = (array) json_decode($debit->getCreditsUsed(), true);
                 foreach ($debitCreditsUsed as $index => $value) {
                     if ($index == $item->getId()) {
                         $remainingPointsOnCredit = $remainingPointsOnCredit + $value;

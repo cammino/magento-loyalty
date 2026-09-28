@@ -14,31 +14,37 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     /**
     * Function responsible for check if module is active
     *
+    * @param mixed $store Store (current store when null)
+    *
     * @return boolean
     */
-    public function isActive()
+    public function isActive($store = null)
     {
-        return (bool) Mage::getStoreConfig('loyalty/general/active');
+        return (bool) Mage::getStoreConfig('loyalty/general/active', $store);
     }
 
     /**
     * Function responsible for get points_to_money config
     *
+    * @param mixed $store Store (current store when null)
+    *
     * @return float
     */
-    public function getPointToMoney()
+    public function getPointToMoney($store = null)
     {
-        return (float) Mage::getStoreConfig('loyalty/points/point_to_money');
+        return (float) Mage::getStoreConfig('loyalty/points/point_to_money', $store);
     }
     
     /**
     * Function responsible for get points_to_money config
     *
+    * @param mixed $store Store (current store when null)
+    *
     * @return float
     */
-    public function getMoneyToPoint()
+    public function getMoneyToPoint($store = null)
     {
-        return (float) Mage::getStoreConfig('loyalty/points/money_to_point');
+        return (float) Mage::getStoreConfig('loyalty/points/money_to_point', $store);
     }
     
     
@@ -85,12 +91,14 @@ class Cammino_Loyalty_Helper_Data extends Mage_Core_Helper_Abstract
     /**
     * Function responsible for get days_to_expire config
     *
+    * @param mixed $store Store (current store when null)
+    *
     * @return float
     */
-    public function getDaysToExpire()
+    public function getDaysToExpire($store = null)
     {
-        if (!empty(Mage::getStoreConfig('loyalty/advanced/days_to_expire'))) {
-            return (float) Mage::getStoreConfig('loyalty/advanced/days_to_expire');
+        if (!empty(Mage::getStoreConfig('loyalty/advanced/days_to_expire', $store))) {
+            return (float) Mage::getStoreConfig('loyalty/advanced/days_to_expire', $store);
         } else {
             return (float) '3650';
         }

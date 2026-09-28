@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:typens="urn:{{var wsdl.name}}"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}"
+             targetNamespace="urn:{{var wsdl.name}}">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:{{var wsdl.name}}">
+            <xsd:complexType name="loyaltyPointsEntryEntity">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="customer_id" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="direction" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="points" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="amount" type="xsd:double" minOccurs="0" />
+                    <xsd:element name="expires_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="balance_points" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="balance_amount" type="xsd:double" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="loyaltyPointsBalanceEntity">
+                <xsd:sequence>
+                    <xsd:element name="customer_id" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="points" type="xsd:int" minOccurs="0" />
+                    <xsd:element name="amount" type="xsd:double" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="loyaltyPointsAddRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="customerId" type="xsd:int" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="amount" type="xsd:double" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="expiresAt" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loyaltyPointsAddResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:loyaltyPointsEntryEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loyaltyPointsRemoveRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="customerId" type="xsd:int" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="amount" type="xsd:double" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loyaltyPointsRemoveResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:loyaltyPointsEntryEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loyaltyPointsBalanceRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="customerId" type="xsd:int" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loyaltyPointsBalanceResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="typens:loyaltyPointsBalanceEntity" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="loyaltyPointsAddRequest">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsAddRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="loyaltyPointsAddResponse">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsAddResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="loyaltyPointsRemoveRequest">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsRemoveRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="loyaltyPointsRemoveResponse">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsRemoveResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="loyaltyPointsBalanceRequest">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsBalanceRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="loyaltyPointsBalanceResponse">
+        <wsdl:part name="parameters" element="typens:loyaltyPointsBalanceResponseParam" />
+    </wsdl:message>
+    <wsdl:portType name="{{var wsdl.handler}}PortType">
+        <wsdl:operation name="loyaltyPointsAdd">
+            <wsdl:documentation>Add credits to a customer</wsdl:documentation>
+            <wsdl:input message="typens:loyaltyPointsAddRequest" />
+            <wsdl:output message="typens:loyaltyPointsAddResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="loyaltyPointsRemove">
+            <wsdl:documentation>Remove credits from a customer</wsdl:documentation>
+            <wsdl:input message="typens:loyaltyPointsRemoveRequest" />
+            <wsdl:output message="typens:loyaltyPointsRemoveResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="loyaltyPointsBalance">
+            <wsdl:documentation>Retrieve customer balance</wsdl:documentation>
+            <wsdl:input message="typens:loyaltyPointsBalanceRequest" />
+            <wsdl:output message="typens:loyaltyPointsBalanceResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="loyaltyPointsAdd">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="loyaltyPointsRemove">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="loyaltyPointsBalance">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>

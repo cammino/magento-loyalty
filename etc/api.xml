@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <loyalty_points translate="title" module="loyalty">
+                <title>Loyalty Points API</title>
+                <model>loyalty/points_api</model>
+                <acl>loyalty/points</acl>
+                <methods>
+                    <add translate="title" module="loyalty">
+                        <title>Add credits to a customer</title>
+                        <acl>loyalty/points/add</acl>
+                    </add>
+                    <remove translate="title" module="loyalty">
+                        <title>Remove credits from a customer</title>
+                        <acl>loyalty/points/remove</acl>
+                    </remove>
+                    <balance translate="title" module="loyalty">
+                        <title>Retrieve customer balance</title>
+                        <acl>loyalty/points/balance</acl>
+                    </balance>
+                </methods>
+                <faults module="loyalty">
+                    <customer_not_exists>
+                        <code>101</code>
+                        <message>Customer not exists.</message>
+                    </customer_not_exists>
+                    <invalid_amount>
+                        <code>102</code>
+                        <message>Invalid amount. It must be a number greater than zero (points when the store shows points, money otherwise).</message>
+                    </invalid_amount>
+                    <invalid_date>
+                        <code>103</code>
+                        <message>Invalid expiration date. Use the format Y-m-d or Y-m-d H:i:s.</message>
+                    </invalid_date>
+                    <insufficient_balance>
+                        <code>104</code>
+                        <message>Customer does not have enough balance.</message>
+                    </insufficient_balance>
+                    <module_disabled>
+                        <code>105</code>
+                        <message>Loyalty module is disabled for this store.</message>
+                    </module_disabled>
+                    <invalid_config>
+                        <code>106</code>
+                        <message>Loyalty point_to_money config is not set for this store.</message>
+                    </invalid_config>
+                    <save_error>
+                        <code>107</code>
+                        <message>Error while saving the points.</message>
+                    </save_error>
+                </faults>
+            </loyalty_points>
+        </resources>
+        <resources_alias>
+            <loyalty>loyalty_points</loyalty>
+        </resources_alias>
+        <v2>
+            <resources_function_prefix>
+                <loyalty_points>loyaltyPoints</loyalty_points>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <loyalty translate="title" module="loyalty">
+                    <title>Loyalty</title>
+                    <sort_order>900</sort_order>
+                    <points translate="title" module="loyalty">
+                        <title>Points</title>
+                        <add translate="title" module="loyalty">
+                            <title>Add credits</title>
+                        </add>
+                        <remove translate="title" module="loyalty">
+                            <title>Remove credits</title>
+                        </remove>
+                        <balance translate="title" module="loyalty">
+                            <title>Retrieve balance</title>
+                        </balance>
+                    </points>
+                </loyalty>
+            </resources>
+        </acl>
+    </api>
+</config>
